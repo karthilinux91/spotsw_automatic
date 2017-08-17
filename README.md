@@ -1,0 +1,1 @@
+# spotsw_automatic
