@@ -1045,7 +1045,7 @@ then
 	   echo "Version : " $version
 	   echo "path:" $path
 	   echo "plugins:" 
-	   $mainpath/packages/wp-cli/wp-cli plugin list   --allow-root
+	   $mainpath/packages/wp-cli plugin list   --allow-root
 	   cd $mainpath
 
 
@@ -1080,10 +1080,9 @@ echo "Drupal"
 >$mainpath/tempfiles/drupal_index.txt
 >$mainpath/tempfiles/store.txt
 
-$mainpath/packages/locate$flag_version$flag_version -r index.php$ -d $mainpath/mlocate.db >$mainpath/tempfiles/store.txt
+$mainpath/packages/locate$flag_version -r index.php$ -d $mainpath/mlocate.db >$mainpath/tempfiles/store.txt
 FILENAME1="$mainpath/tempfiles/store.txt"
-mainpath="$mainpath/"
-#echo mainpath: $mainpath 
+echo mainpath: $mainpath 
 
 if [ -s ${FILENAME1} ]
 then
