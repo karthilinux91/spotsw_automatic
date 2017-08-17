@@ -354,7 +354,7 @@ echo "wait few minutes ..............updatedb process"
 ########################################################################
 echo "apache"
 > $mainpath/tempfiles/store.txt
-$mainpath/packages/locate -r /httpd$ -d $mainpath/mlocate.db | xargs file  2>&1 | grep dynamically  | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
+$mainpath/packages/locate$flag_version -r /httpd$ -d $mainpath/mlocate.db | xargs file  2>&1 | grep dynamically  | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
 FILENAME="$mainpath/tempfiles/store.txt"
 if [ -s ${FILENAME} ]
 then
@@ -414,7 +414,7 @@ fi
 
 echo "PHP"
 > $mainpath/tempfiles/store.txt
-$mainpath/packages/locate -r /bin/php$ -d $mainpath/mlocate.db | xargs file  2>&1 | grep dynamically  | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
+$mainpath/packages/locate$flag_version -r /bin/php$ -d $mainpath/mlocate.db | xargs file  2>&1 | grep dynamically  | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
 FILENAME="$mainpath/tempfiles/store.txt"
 
 if [ -s ${FILENAME} ]
@@ -480,7 +480,7 @@ fi
 ########################################################################
 echo "Tomcat"
 > $mainpath/tempfiles/store.txt
-$mainpath/packages/locate -r /catalina.jar$ -d $mainpath/mlocate.db | xargs file 2>&1 | grep Zip  | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
+$mainpath/packages/locate$flag_version -r /catalina.jar$ -d $mainpath/mlocate.db | xargs file 2>&1 | grep Zip  | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
 FILENAME="$mainpath/tempfiles/store.txt"
 
 
@@ -537,7 +537,7 @@ fi
 
 echo "JAVA"
 > $mainpath/tempfiles/store.txt
-$mainpath/packages/locate -r /bin/java$ -d $mainpath/mlocate.db| xargs file  2>&1 | grep dynamically  | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
+$mainpath/packages/locate$flag_version -r /bin/java$ -d $mainpath/mlocate.db| xargs file  2>&1 | grep dynamically  | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
 
 FILENAME="$mainpath/tempfiles/store.txt"
 
@@ -587,7 +587,7 @@ fi
 ########################################################################
 echo "POSTGRESQL SERVER"
 >$mainpath/tempfiles/store.txt
-$mainpath/packages/locate -r bin/pg_config$ -d $mainpath/mlocate.db| xargs file 2>&1 | grep dynamically | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
+$mainpath/packages/locate$flag_version -r bin/pg_config$ -d $mainpath/mlocate.db| xargs file 2>&1 | grep dynamically | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
 FILENAME="$mainpath/tempfiles/store.txt"
 ##############################################################################################
 if [ -s ${FILENAME} ]
@@ -639,7 +639,7 @@ fi
 ########################################################################
 echo "POSTGRESQL Client"
 >$mainpath/tempfiles/store.txt
-$mainpath/packages/locate -r bin/psql$ -d $mainpath/mlocate.db | xargs file 2>&1 | grep dynamically | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
+$mainpath/packages/locate$flag_version -r bin/psql$ -d $mainpath/mlocate.db | xargs file 2>&1 | grep dynamically | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
 FILENAME="$mainpath/tempfiles/store.txt"
 ##############################################################################################
 if [ -s ${FILENAME} ]
@@ -691,7 +691,7 @@ fi
 ########################################################################
 echo "MYSQL or MariaDB Server"
 >$mainpath/tempfiles/store.txt
-$mainpath/packages/locate -r bin/mysqld$ -d $mainpath/mlocate.db | xargs file 2>&1 | grep dynamically | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
+$mainpath/packages/locate$flag_version -r bin/mysqld$ -d $mainpath/mlocate.db | xargs file 2>&1 | grep dynamically | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
 FILENAME="$mainpath/tempfiles/store.txt"
 ##############################################################################################
 if [ -s ${FILENAME} ]
@@ -744,7 +744,7 @@ fi
 ########################################################################
 echo "MYSQL or MariaDB Client"
 >$mainpath/tempfiles/store.txt
-$mainpath/packages/locate -r bin/mysql$ -d $mainpath/mlocate.db | xargs file 2>&1 | grep dynamically | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
+$mainpath/packages/locate$flag_version -r bin/mysql$ -d $mainpath/mlocate.db | xargs file 2>&1 | grep dynamically | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
 FILENAME="$mainpath/tempfiles/store.txt"
 ##############################################################################################
 if [ -s ${FILENAME} ]
@@ -796,7 +796,7 @@ fi
 ########################################################################
 echo "PERL"
 > $mainpath/tempfiles/store.txt
-$mainpath/packages/locate -r /bin/perl$ -d $mainpath/mlocate.db | xargs file  2>&1 | grep dynamically  | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
+$mainpath/packages/locate$flag_version -r /bin/perl$ -d $mainpath/mlocate.db | xargs file  2>&1 | grep dynamically  | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
 
 FILENAME="$mainpath/tempfiles/store.txt"
 
@@ -846,7 +846,7 @@ fi
 ########################################################################
 echo "PYTHON" 
 >$mainpath/tempfiles/store.txt
-$mainpath/packages/locate  /bin/python  -d $mainpath/mlocate.db  | xargs file 2>&1 | grep dynamically | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
+$mainpath/packages/locate$flag_version  /bin/python  -d $mainpath/mlocate.db  | xargs file 2>&1 | grep dynamically | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
 
 FILENAME="$mainpath/tempfiles/store.txt"
 
@@ -1014,7 +1014,7 @@ echo "Enabled services block"
 
 echo "wordpress"
 > $mainpath/tempfiles/store.txt
-$mainpath/packages/locate wp-login.php -d $mainpath/mlocate.db | awk -F"wp-login" '{print $1}' > $mainpath/tempfiles/store.txt
+$mainpath/packages/locate$flag_version wp-login.php -d $mainpath/mlocate.db | awk -F"wp-login" '{print $1}' > $mainpath/tempfiles/store.txt
 FILENAME="$mainpath/tempfiles/store.txt"
 
 echo mainpath: $mainpath 
@@ -1080,7 +1080,7 @@ echo "Drupal"
 >$mainpath/tempfiles/drupal_index.txt
 >$mainpath/tempfiles/store.txt
 
-$mainpath/packages/locate$flag_version -r index.php$ -d $mainpath/mlocate.db >$mainpath/tempfiles/store.txt
+$mainpath/packages/locate$flag_version$flag_version -r index.php$ -d $mainpath/mlocate.db >$mainpath/tempfiles/store.txt
 FILENAME1="$mainpath/tempfiles/store.txt"
 mainpath="$mainpath/"
 #echo mainpath: $mainpath 
