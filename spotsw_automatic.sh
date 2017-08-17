@@ -440,7 +440,7 @@ then
 	   modules="`${array[c]} -m 2>&1`"
 	   ${array[c]} -m 2>&1 | awk '{$1=$1;print}' >$mainpath/tempfiles/phpmod.txt
            cat $mainpath/tempfiles/phpmod.txt | sed  's/\(.*\)/"\1",/g' | awk '{a[NR]=$0} END {for (i=1;i<NR;i++) 
-	   print a  [i];sub(/.$/,"",a[NR]);print a[NR]}'   > $mainpath/tempfiles/phpmod_result.txt
+	   print a  [i];sub(/.$/,"", a[NR]);print a[NR]}'   > $mainpath/tempfiles/phpmod_result.txt
 
 
 
