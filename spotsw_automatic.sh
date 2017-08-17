@@ -23,7 +23,7 @@
 #       CREATED: Monday 14 August 2017 9:30:47  IST
 #      REVISION: 0.1 
 ####################################################################################################################
-
+mainpath=`pwd`
 begin=$(date +%s) 
 set -o nounset                              # Treat unset variables as an error
 >report.html 
@@ -347,7 +347,7 @@ echo  "	<tbody class=""table-hover"">				"	>>  report.html
 echo "wait few minutes ..............updatedb process"
 ./packages/updatedb$flag_version --require-visibility 0 -o mlocate.db
 
-mainpath=`pwd`
+
 
 ########################################################################
 #               HTTPD Service  version,path and modules                #
