@@ -1303,23 +1303,6 @@ echo  "	</br>							"	>>  report.html
 echo  " </body>                                                 "       >>  report.html
 echo  " </html>                                                 "       >>  report.html
 
-#######################################################
-#           Report trigger                            # 
-#######################################################
-
-
-
-
-which firefox   >$mainpath/tempfiles/out 2>&1 >$mainpath/tempfiles/error.txt
-value="$(echo $? )"
-if [ $value -eq 0 ]
-then
-     firefox report.html
-else
-  echo "firefox is not found."
-  echo "Check the report file manually by any browser"
-fi
-echo "location:"  `pwd`
 
 
 #################################
@@ -1337,6 +1320,31 @@ echo $file_name.html
 echo $file_name.json  
 mv report.html   $file_name.html
 mv report.json   $file_name.json 
+
+
+#######################################################
+#           Report trigger                            # 
+#######################################################
+
+
+
+
+which firefox   >$mainpath/tempfiles/out 2>&1 >$mainpath/tempfiles/error.txt
+value="$(echo $? )"
+if [ $value -eq 0 ]
+then
+     firefox $file_name.html
+else
+  echo "firefox is not found."
+  echo "Check the report file manually by any browser"
+fi
+echo "location:"  `pwd`
+
+
+
+
+
+
 
 #################################################
 #    Send json data to web service              #
