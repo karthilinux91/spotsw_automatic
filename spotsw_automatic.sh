@@ -1166,17 +1166,174 @@ cd $mainpath
 
 
 ########################################################################
+#                     NodeJS   version                                 #
+########################################################################
+echo "NodeJS" 
+>$mainpath/tempfiles/store.txt
+$mainpath/packages/locate$flag_version -r /bin/node$  -d $mainpath/mlocate.db  | xargs file 2>&1 | grep 'executable\|dynamically' | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
+FILENAME="$mainpath/tempfiles/store.txt"
+
+#########################################################################
+
+if [ -s ${FILENAME} ]
+then
+    echo  " <tr>                                            "       >>  report.html
+    echo  " <td class=""text-left"">NodeJS</td>              "       >>  report.html
+    echo  " <td class=""text-left""><br>		    "  	    >>  report.html
+    echo "\"node"\" : "[" >> report.json
+    total="$(cat $mainpath/tempfiles/store.txt  | wc -l )"
+	i=1
+	while IFS= read -r var
+	do
+	  array[ $i ]=$var
+	  (( i++ ))
+	done < "$mainpath/tempfiles/store.txt"
+
+	for (( c=1; c<=$total; c++ ))
+	do
+	   version="`${array[c]}  -v  2>&1`"
+	   path=${array[c]}
+	   echo "Version : " $version
+	   echo "path:" $path
+	   echo ""
+	   echo ""
+  	   echo "<font color="blue">Version:</font>&nbsp;&nbsp;$version<hr><font color="blue">Path:</font>&nbsp;&nbsp;$path " >>report.html
+           if [ $c -lt $total ]
+	   then
+         	echo " <hr size="4" color="#fd00cb" /> " >> report.html
+		echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\" "}," >>  report.json
+           else 
+                echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\""}]," >>  report.json
+	  fi 
+	done
+   	echo  "</td>                                          "        >>  report.html
+	echo  " <td align=center>  NodeJS:8.4.0         </td>  </tr> "        >> report.html
+else
+  echo "NodeJS not found!"
+  echo "\"node"\":["\"not detected"\"], >> report.json 
+fi
+
+#########################################################################################
+echo "Npm" 
+>$mainpath/tempfiles/store.txt
+$mainpath/packages/locate$flag_version -r /bin/npm-cli.js$  -d $mainpath/mlocate.db  | xargs file 2>&1 | grep 'executable\|dynamically' | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
+FILENAME="$mainpath/tempfiles/store.txt"
+
+#########################################################################
+
+if [ -s ${FILENAME} ]
+then
+    echo  " <tr>                                            "       >>  report.html
+    echo  " <td class=""text-left"">NPM</td>              "       >>  report.html
+    echo  " <td class=""text-left""><br>		    "  	    >>  report.html
+    echo "\"npm"\" : "[" >> report.json
+    total="$(cat $mainpath/tempfiles/store.txt  | wc -l )"
+	i=1
+	while IFS= read -r var
+	do
+	  array[ $i ]=$var
+	  (( i++ ))
+	done < "$mainpath/tempfiles/store.txt"
+
+	for (( c=1; c<=$total; c++ ))
+	do
+	   version="`${array[c]}  -v  2>&1`"
+	   path=${array[c]}
+	   echo "Version : " $version
+	   echo "path:" $path
+	   echo ""
+	   echo ""
+  	   echo "<font color="blue">Version:</font>&nbsp;&nbsp;$version<hr><font color="blue">Path:</font>&nbsp;&nbsp;$path " >>report.html
+           if [ $c -lt $total ]
+	   then
+         	echo " <hr size="4" color="#fd00cb" /> " >> report.html
+		echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\" "}," >>  report.json
+           else 
+                echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\""}]," >>  report.json
+	  fi 
+	done
+   	echo  "</td>                                          "        >>  report.html
+	echo  " <td align=center>  NPM:5.3.0         </td>  </tr> "        >> report.html
+else
+  echo "NPM not found!"
+  echo "\"npm"\":["\"not detected"\"], >> report.json 
+fi
+
+echo ""
+echo ""
+
+
+
+########################################################################
+#               NGINX Service  version,path and modules                #
+########################################################################
+echo "nginx"
+>$mainpath/tempfiles/store.txt
+$mainpath/packages/locate$flag_version -r /nginx$ -d $mainpath/mlocate.db | xargs file  2>&1 | grep dynamically  | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
+FILENAME="$mainpath/tempfiles/store.txt"
+if [ -s ${FILENAME} ]
+then
+    echo "File has data"
+    echo  " <tr>                                            "       >>  report.html
+    echo  " <td class=""text-left"">Nginx</td>             "       >>  report.html
+    echo  " <td class=""text-left""><br>		    "  	    >>  report.html
+    echo "\"nginx"\" : "[" >> report.json
+    total="$(cat $mainpath/tempfiles/store.txt  | wc -l )"
+	i=1
+	while IFS= read -r var
+	do
+	  array[ $i ]=$var
+	  (( i++ ))
+	done < "$mainpath/tempfiles/store.txt"
+
+	for (( c=1; c<=$total; c++ ))
+	do
+	   version="`${array[c]} -v 2>&1  | awk -F":" '{print $2}'`"
+	   path=${array[c]}
+	   modules="`${array[c]} -V 2>&1 | tr -- - '\n' | grep module | grep -v 'modules\|path'`"
+       ${array[c]} -V 2>&1 | tr -- - '\n' | grep module | grep -v 'modules\|path' >$mainpath/tempfiles/nginxmod.txt 
+	   
+           cat $mainpath/tempfiles/nginxmod.txt | sed  's/\(.*\)/"\1",/g' | awk '{a[NR]=$0} END {for (i=1;i<NR;i++) print a[i];sub(/.$/,"",a[NR]);print a[NR]}'   > $mainpath/tempfiles/nginxmod_result.txt 
+
+
+
+
+
+	   echo "Version : " $version
+	   echo "path:" $path
+	   echo "modules:" $modules
+	   echo ""
+	   echo ""
+	   echo "<font color="blue">Version:</font>&nbsp;&nbsp;$version<hr><font color="blue">Path:</font>&nbsp;&nbsp;$path<hr><font color="blue">Modules: </font> $modules " >>report.html
+
+
+           if [ $c -lt $total ]
+	   then
+         	echo " <hr size="4" color="#fd00cb" /> " >> report.html
+	        echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\"",""\"modules"\":[`cat 			$mainpath/tempfiles/nginxmod_result.txt`]"}" ",">>  report.json
+           else 
+                echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\"",""\"modules"\":[`cat 			$mainpath/tempfiles/nginxmod_result.txt`]"}" "],">>  report.json 
+	  fi 
+	done
+   	echo  "</td>                                            "        >>  report.html
+        echo  " <td align=center>  Nginx:1.12.1   </td>  </tr> "        >> report.html
+else
+  echo "Nginx not found!!"
+  echo "\"nginx"\":["\"not detected"\"], >> report.json 
+fi
+
+########################################################################
 #                     SeLinux  status                                  #
 ########################################################################
 echo  " <tr>                                                            "       >>  report.html
-echo  " <td class=""text-left"">SeLinux</td>   "       >>  report.html
+echo  " <td class=""text-left"">SELinux</td>   "       >>  report.html
 echo  " <td class=""text-left""><br>		                        "  	>>  report.html
 echo "SeLinux status:&nbsp;&nbsp ` getenforce`"       >>report.html
 echo  "</td> </tr>              "       >>  report.html
 echo "\"selinux_status"\": "\"` getenforce`"\",   >> report.json 
 
 
-echo "SeLinux status:" ` getenforce`
+echo "SELinux status:" ` getenforce`
 
 ########################################################################
 #                    Firewall  status                                  #
@@ -1290,6 +1447,19 @@ else
         echo "\"open_ports"\":[ "\" Open Ports not found ! "\" "] }" >> report.json
 fi 
 
+echo ""
+echo ""
+
+##############################################################################
+
+
+
+
+
+
+
+
+
 
 
 ####################################################################################
@@ -1335,30 +1505,10 @@ if [ $value -eq 0 ]
 then
      firefox $file_name.html
 else
-  echo "firefox is not found."
-  echo "Check the report file manually by any browser"
+ 	echo "firefox is not found."
+  	echo "Check the report file manually by any browser"
 fi
 echo "location:"  `pwd`
-
-
-
-
-
-
-
-#################################################
-#    Send json data to web service              #
-#################################################
-
-
-curl -u admin:admin -H "Content-Type: application/json" -X POST -d @$file_name.json http://$1:8282/test_service/services/rest/SearchingManage/fetchDataBy/
-
-
-#curl -u admin:admin -H "Content-Type: application/json" -X POST -d @$file_name.json http://10.163.14.72:8282/test_service/services/rest/SearchingManage/fetchDataBy/
-
-
-#curl -u admin:admin -H "Content-Type: application/json" -X POST -d @report.html http://10.163.14.72:8282/test_service/services/rest/SearchingManage/fetchDataBy/
-
 
 ######################################
 #  show the time for script excution # 
@@ -1368,6 +1518,22 @@ echo ""
 end=$(date +%s)
 tottime=$(expr $end - $begin)
 echo " Time (minutes or seconds ) :" $tottime 
+
+
+
+
+#################################################
+#    Send json data to web service              #
+#################################################
+
+
+curl -u admin:admin -H "Content-Type: application/json" -X POST -d @$file_name.json http://$1:8080/test_service/services/rest/SearchingManage/fetchDataBy/
+
+
+
+
+
+
 
 
 

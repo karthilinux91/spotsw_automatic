@@ -1,0 +1,721 @@
+	<html lang=en>	 
+	<head>	 
+	<meta charset=utf-8 />	 
+	<title>Software Audit</title>	 
+	<meta name=viewport content=initial-scale=1.0; maximum-scale=1.0; width=device-width;> 
+	<style>	 
+	body {	 
+	  background-color: #3e94ec;	 
+	  font-family: Roboto, helvetica, arial, sans-serif;	 
+	  font-size: 16px;	 
+	  font-weight: 400;	 
+	  text-rendering: optimizeLegibility;	 
+	}	 
+	div.table-title {	 
+	  display: block;	 
+	  margin: auto;	 
+	  max-width: 1000px;	 
+	  padding:5px;	 
+	  width: 100%;	 
+	}	 
+	.table-title h3 {	 
+	   color: #fafafa;	 
+	   font-size: 30px;	 
+	   font-weight: 400;	 
+	   font-style:normal;	 
+	   font-family: Roboto, helvetica, arial, sans-serif;	 
+	   text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);	 
+	   text-transform:uppercase;	 
+	}	 
+	/*** Table Styles 1 **/	 
+	.table-fill1 {	 
+	  background: white;	 
+	  border-radius:3px;	 
+	  border-collapse: collapse;	 
+	  height: 200px;	 
+	  margin: auto;	 
+	  max-width: 1100px;	 
+	  padding:5px;	 
+	  width: 100%;	 
+	  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);	 
+	  animation: float 5s infinite;	 
+	}	 
+	/*** Table Styles 2 **/	 
+	.table-fill2 {	 
+	  background: white;	 
+	  border-radius:3px;	 
+	  border-collapse: collapse;	 
+	  height: 200px;	 
+	  margin: auto;	 
+	  max-width: 1100px;	 
+	  padding:5px;	 
+	  width: 100%;	 
+	  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);	 
+	  animation: float 5s infinite;	 
+	} 	 
+	th {	 
+	  color:#D5DDE5;;	 
+	  background:#1b1e24;	 
+	  border-bottom:4px solid #9ea7af;	 
+	  border-right: 1px solid #343a45;	 
+	  font-size:23px;	 
+	  font-weight: 100;	 
+	  padding:6px;	 
+	  text-align:left;	 
+	  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);	 
+	  vertical-align:middle;	 
+	}	 
+	th:first-child {  border-top-left-radius:3px;} 	 
+	th:last-child {  border-top-right-radius:3px;  border-right:none;}  	 
+	tr {	 
+	  border-top: 1px solid #C1C3D1;	 
+	  border-bottom-: 1px solid #C1C3D1;	 
+	  color:#666B85;	 
+	  font-size:16px;	 
+	  font-weight:normal;	 
+	  text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);	 
+	} 	 
+	tr:hover td {	 
+	  background:#4E5066; 	 
+	 /** background: burlywood; **/	 
+	  color:#FFFFFF;	 
+	  border-top: 1px solid #22262e;	 
+	  border-bottom: 1px solid #22262e;	 
+	} 	 
+	tr:first-child {  border-top:none;}	 
+	tr:last-child {  border-bottom:none;} 	 
+	tr:nth-child(odd) td {  background:#EBEBEB;} 	 
+	tr:nth-child(odd):hover td {  background:#4E5066;}	 
+	tr:last-child td:first-child {  border-bottom-left-radius:3px;} 	 
+	tr:last-child td:last-child {  border-bottom-right-radius:3px;} 	 
+	td {	 
+	  background:#FFFFFF;	 
+	  padding:5px;	 
+	  text-align:left;	 
+	  vertical-align:middle;	 
+	  font-weight:300;	 
+	  font-size:18px;	 
+	  text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);	 
+	  border-right: 1px solid #C1C3D1;	 
+	}	 
+	td:last-child {  border-right: 0px;}	 
+	td:color-child {  bgcolor:green;}	 
+	th.text-left {  text-align: left;}	 
+	th.text-center {  text-align: center;}	 
+	th.text-right {  text-align: right;}	 
+	td.text-left {  text-align: left;}	 
+	td.text-center {  text-align: center;}	 
+	td.text-right {  text-align: right;}	 
+	</style>	 
+	</head>	 
+	<body>	 
+	<div class=table-title>	 
+	<h3>Discovery of Software Packages in the Server by OTG  </h3>	 
+	</div>	 
+	<table class=table-fill1>	 
+	<thead>	 
+	<tr>	 
+	<th class=text-left>Basic Information</th>	 
+	<th class=text-left></th>	 
+	</tr>	 
+	</thead>	 
+	<tbody class=table-hover>	 
+	<tr>	 
+	</tr>	 
+	<tr>	 						
+	<td class=text-left>Hostname</td>			
+	<td class=text-left>test_machine.nic.rd</td> 		
+	</tr>	  						
+	<tr>							
+	<td class=text-left>IP Address</td>			
+	<td class=text-left>10.163.14.224 10.163.14.81 172.17.0.1 </td>		
+	</tr>							
+	<tr>							
+	<td class=text-left>Mac Address</td>		
+	<td class=text-left>4e:74:af:36:6f:e4 fe:3a:d0:f2:4d:e1 a2:be:9c:e7:a6:28 e6:b5:5b:c3:1a:5b 02:42:da:02:dd:63 </td> 		
+	</tr>							
+ <tr>                                                    
+ <td class=text-left>Platform </td>                  
+ <td class=text-left>Linux</td>                    
+ </tr>                                                   
+	<tr>							
+	<td class=text-left>OS Detail</td>			
+	<td class=text-left>CentOS Linux release 7.3.1611 (Core) </td>	
+	</tr>							
+	<tr>							
+	<td class=text-left>Kernel</td>			
+	<td class=text-left>3.10.0-514.26.2.el7.x86_64</td>			
+	</tr>							
+	<tr>							
+	<td class=text-left>Uptime</td>			
+	<td class=text-left> 11:25:33 up 8 days, 23:09,  1 user,  load average: 0.00, 0.07, 0.11</td>			
+	</tr>
+
+						
+	<tr>							
+	<td class=text-left>Date</td>			
+	<td class=text-left>Sat Aug 19 11:25:33 IST 2017</td>			
+	</tr>							
+	</tbody>						
+	</table>						
+ </br>   			 			
+	</br>							
+	<table class=table-fill2>				
+	<thead>							
+	<tr>							
+	<th class=text-left>Package Name</th>		
+	<th class=text-left>Information of the Packages</th>
+	<th class=text-left>Latest package version  </th>   
+	</tr>							
+	</thead>						
+	<tbody class=table-hover>				
+ <tr>                                            
+ <td class=text-left>Apache </td>             
+ <td class=text-left><br>		    
+<font color=blue>Version:</font>&nbsp;&nbsp;Apache/2.4.27<hr><font color=blue>Path:</font>&nbsp;&nbsp;/home/nic/install/httpd/bin/httpd<hr><font color=blue>Modules: </font>  core_module (static)
+ so_module (static)
+ http_module (static)
+ mpm_event_module (static)
+ authn_file_module (shared)
+ authn_core_module (shared)
+ authz_host_module (shared)
+ authz_groupfile_module (shared)
+ authz_user_module (shared)
+ authz_core_module (shared)
+ access_compat_module (shared)
+ auth_basic_module (shared)
+ reqtimeout_module (shared)
+ filter_module (shared)
+ mime_module (shared)
+ log_config_module (shared)
+ env_module (shared)
+ headers_module (shared)
+ setenvif_module (shared)
+ version_module (shared)
+ unixd_module (shared)
+ status_module (shared)
+ autoindex_module (shared)
+ dir_module (shared)
+ alias_module (shared) 
+ <hr size=4 color=#fd00cb /> 
+<font color=blue>Version:</font>&nbsp;&nbsp;Apache/2.4.6<hr><font color=blue>Path:</font>&nbsp;&nbsp;/usr/sbin/httpd<hr><font color=blue>Modules: </font>  core_module (static)
+ so_module (static)
+ http_module (static)
+ access_compat_module (shared)
+ actions_module (shared)
+ alias_module (shared)
+ allowmethods_module (shared)
+ auth_basic_module (shared)
+ auth_digest_module (shared)
+ authn_anon_module (shared)
+ authn_core_module (shared)
+ authn_dbd_module (shared)
+ authn_dbm_module (shared)
+ authn_file_module (shared)
+ authn_socache_module (shared)
+ authz_core_module (shared)
+ authz_dbd_module (shared)
+ authz_dbm_module (shared)
+ authz_groupfile_module (shared)
+ authz_host_module (shared)
+ authz_owner_module (shared)
+ authz_user_module (shared)
+ autoindex_module (shared)
+ cache_module (shared)
+ cache_disk_module (shared)
+ data_module (shared)
+ dbd_module (shared)
+ deflate_module (shared)
+ dir_module (shared)
+ dumpio_module (shared)
+ echo_module (shared)
+ env_module (shared)
+ expires_module (shared)
+ ext_filter_module (shared)
+ filter_module (shared)
+ headers_module (shared)
+ include_module (shared)
+ info_module (shared)
+ log_config_module (shared)
+ logio_module (shared)
+ mime_magic_module (shared)
+ mime_module (shared)
+ negotiation_module (shared)
+ remoteip_module (shared)
+ reqtimeout_module (shared)
+ rewrite_module (shared)
+ setenvif_module (shared)
+ slotmem_plain_module (shared)
+ slotmem_shm_module (shared)
+ socache_dbm_module (shared)
+ socache_memcache_module (shared)
+ socache_shmcb_module (shared)
+ status_module (shared)
+ substitute_module (shared)
+ suexec_module (shared)
+ unique_id_module (shared)
+ unixd_module (shared)
+ userdir_module (shared)
+ version_module (shared)
+ vhost_alias_module (shared)
+ dav_module (shared)
+ dav_fs_module (shared)
+ dav_lock_module (shared)
+ lua_module (shared)
+ mpm_prefork_module (shared)
+ proxy_module (shared)
+ lbmethod_bybusyness_module (shared)
+ lbmethod_byrequests_module (shared)
+ lbmethod_bytraffic_module (shared)
+ lbmethod_heartbeat_module (shared)
+ proxy_ajp_module (shared)
+ proxy_balancer_module (shared)
+ proxy_connect_module (shared)
+ proxy_express_module (shared)
+ proxy_fcgi_module (shared)
+ proxy_fdpass_module (shared)
+ proxy_ftp_module (shared)
+ proxy_http_module (shared)
+ proxy_scgi_module (shared)
+ proxy_wstunnel_module (shared)
+ systemd_module (shared)
+ cgi_module (shared)
+ php7_module (shared) 
+</td>                                            
+ <td align=center>  Apache:2.4.27   </td>  </tr> 
+ <tr>                                            
+ <td class=text-left>PHP   </td>             
+ <td class=text-left><br>		    
+<font color=blue>Version:</font>&nbsp;&nbsp;PHP7.0.21<hr><font color=blue>Path:</font>&nbsp;&nbsp;/home/nic/install/php/bin/php<hr><font color=blue>Modules:</font>[PHP Modules]
+Core
+ctype
+date
+dom
+fileinfo
+filter
+hash
+iconv
+json
+libxml
+pcre
+PDO
+pdo_sqlite
+Phar
+posix
+Reflection
+session
+SimpleXML
+SPL
+sqlite3
+standard
+tokenizer
+xml
+xmlreader
+xmlwriter
+
+[Zend Modules] 
+ <hr size=4 color=#fd00cb /> 
+<font color=blue>Version:</font>&nbsp;&nbsp;PHP7.0.20<hr><font color=blue>Path:</font>&nbsp;&nbsp;/usr/bin/php<hr><font color=blue>Modules:</font>[PHP Modules]
+bz2
+calendar
+Core
+ctype
+curl
+date
+dom
+exif
+fileinfo
+filter
+ftp
+gd
+gettext
+gmp
+hash
+iconv
+intl
+json
+libxml
+mbstring
+mysqli
+openssl
+pcntl
+pcre
+PDO
+pdo_mysql
+pdo_sqlite
+Phar
+posix
+readline
+Reflection
+session
+shmop
+SimpleXML
+soap
+sockets
+SPL
+sqlite3
+standard
+sysvmsg
+sysvsem
+sysvshm
+tidy
+tokenizer
+wddx
+xml
+xmlreader
+xmlwriter
+xsl
+Zend OPcache
+zip
+zlib
+
+[Zend Modules]
+Zend OPcache 
+</td>                                          
+ <td align=center>  PHP:7.1.7            </td>  </tr> 
+ <tr>                                            
+ <td class=text-left>Tomcat </td>            
+ <td class=text-left><br>		    
+<font color=blue>Version:</font>&nbsp;&nbsp;8.5.16.0<hr><font color=blue>Path:</font>&nbsp;&nbsp;/opt/backup/apache-tomcat-8.5.16/lib/catalina.jar 
+ <hr size=4 color=#fd00cb /> 
+<font color=blue>Version:</font>&nbsp;&nbsp;7.0.69.0<hr><font color=blue>Path:</font>&nbsp;&nbsp;/usr/share/java/tomcat/catalina.jar 
+</td>                                          
+ <td align=center>  Tomcat:8.5.16         </td>  </tr> 
+ <tr>                                            
+ <td class=text-left>JAVA </td>              
+ <td class=text-left><br>		    
+<font color=blue>Version:</font>&nbsp;&nbsp;1.7.0_141<hr><font color=blue>Path:</font>&nbsp;&nbsp;/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.141-2.6.10.1.el7_3.x86_64/jre-abrt/bin/java 
+ <hr size=4 color=#fd00cb /> 
+<font color=blue>Version:</font>&nbsp;&nbsp;1.8.0_131<hr><font color=blue>Path:</font>&nbsp;&nbsp;/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.131-3.b12.el7_3.x86_64/jre/bin/java 
+</td>                                          
+ <td align=center>  Open JDK Java: 1.8.0        </td>  </tr> 
+ <tr>                                            
+ <td class=text-left>PostgreSQL Server </td> 
+ <td class=text-left><br>		    
+<font color=blue>Version:</font>&nbsp;&nbsp;9.2.18<hr><font color=blue>Path:</font>&nbsp;&nbsp;/usr/bin/pg_config 
+ <hr size=4 color=#fd00cb /> 
+<font color=blue>Version:</font>&nbsp;&nbsp;9.6.3<hr><font color=blue>Path:</font>&nbsp;&nbsp;/usr/pgsql-9.6/bin/pg_config 
+</td>                                          
+ <td align=center>  PostgreSQL Server:9.6.3         </td>  </tr> 
+ <tr>                                            
+ <td class=text-left>PostgreSQL Client </td> 
+ <td class=text-left><br>		    
+<font color=blue>Version:</font>&nbsp;&nbsp;9.2.18<hr><font color=blue>Path:</font>&nbsp;&nbsp;/usr/bin/psql 
+ <hr size=4 color=#fd00cb /> 
+<font color=blue>Version:</font>&nbsp;&nbsp;9.6.3<hr><font color=blue>Path:</font>&nbsp;&nbsp;/usr/pgsql-9.6/bin/psql 
+</td>                                          
+ <td align=center>  Postgres Client:9.6.3         </td>  </tr> 
+ <tr>                                            
+ <td class=text-left>MySQL or MariaDB Server </td> 
+ <td class=text-left><br>		    
+<font color=blue>Version:</font>&nbsp;&nbsp;10.1.25-MariaDB<hr><font color=blue>Path:</font>&nbsp;&nbsp;/usr/sbin/mysqld 
+</td>                                          
+ <td align=center>  MySQL Server : 5.7.19 0r MariaDB server: 10.2.7  </td>  </tr> 
+ <tr>                                            
+ <td class=text-left>MySQL or MariaDB Client</td> 
+ <td class=text-left><br>		    
+<font color=blue>Version:</font>&nbsp;&nbsp;10.1.25-MariaDB<hr><font color=blue>Path:</font>&nbsp;&nbsp;/usr/bin/mysql 
+</td>                                          
+ <td align=center>  MySQL client:5.7.19  or Mariadb client:10.2.7       </td>  </tr> 
+ <tr>                                            
+ <td class=text-left>Perl </td>              
+ <td class=text-left><br>		    
+<font color=blue>Version:</font>&nbsp;&nbsp;v5.16.3<hr><font color=blue>Path:</font>&nbsp;&nbsp;/usr/bin/perl 
+</td>                                          
+ <td align=center>  Perl:5.26.0        </td>  </tr> 
+ <tr>                                            
+ <td class=text-left>Python </td>              
+ <td class=text-left><br>		    
+<font color=blue>Version:</font>&nbsp;&nbsp;2.3<hr><font color=blue>Path:</font>&nbsp;&nbsp;/home/nic/install/Python2.3/bin/python 
+ <hr size=4 color=#fd00cb /> 
+<font color=blue>Version:</font>&nbsp;&nbsp;2.3<hr><font color=blue>Path:</font>&nbsp;&nbsp;/home/nic/install/Python2.3/bin/python2.3 
+ <hr size=4 color=#fd00cb /> 
+<font color=blue>Version:</font>&nbsp;&nbsp;2.7.5<hr><font color=blue>Path:</font>&nbsp;&nbsp;/usr/bin/python2.7 
+ <hr size=4 color=#fd00cb /> 
+<font color=blue>Version:</font>&nbsp;&nbsp;3.4.5<hr><font color=blue>Path:</font>&nbsp;&nbsp;/usr/bin/python3.4 
+ <hr size=4 color=#fd00cb /> 
+<font color=blue>Version:</font>&nbsp;&nbsp;3.4.5<hr><font color=blue>Path:</font>&nbsp;&nbsp;/usr/bin/python3.4m 
+</td>                                          
+ <td align=center>  Python:3.6.2        </td>  </tr> 
+ <tr>                                            
+ <td class=text-left>Running Services </td>              
+ <td class=text-left><br>		    
+&nbsp;&nbsp;auditd.service </br>
+&nbsp;&nbsp;chronyd.service </br>
+&nbsp;&nbsp;crond.service </br>
+&nbsp;&nbsp;dbus.service </br>
+&nbsp;&nbsp;firewalld.service </br>
+&nbsp;&nbsp;lvm2-lvmetad.service </br>
+&nbsp;&nbsp;mariadb.service </br>
+&nbsp;&nbsp;NetworkManager.service </br>
+&nbsp;&nbsp;nginx.service </br>
+&nbsp;&nbsp;polkit.service </br>
+&nbsp;&nbsp;postfix.service </br>
+&nbsp;&nbsp;postgresql-9.6.service </br>
+&nbsp;&nbsp;rsyslog.service </br>
+&nbsp;&nbsp;serial-getty@hvc0.service </br>
+&nbsp;&nbsp;sshd.service </br>
+&nbsp;&nbsp;systemd-journald.service </br>
+&nbsp;&nbsp;systemd-logind.service </br>
+&nbsp;&nbsp;systemd-udevd.service </br>
+&nbsp;&nbsp;tuned.service </br>
+&nbsp;&nbsp;xe-linux-distribution.service </br>
+</td>  </tr>                                        
+ <tr>                                            
+ <td class=text-left>Enabled Services </td>              
+ <td class=text-left><br>		    
+&nbsp;&nbsp;auditd.service </br>
+&nbsp;&nbsp;autovt@.service </br>
+&nbsp;&nbsp;chronyd.service </br>
+&nbsp;&nbsp;crond.service </br>
+&nbsp;&nbsp;dbus-org.fedoraproject.FirewallD1.service </br>
+&nbsp;&nbsp;dbus-org.freedesktop.NetworkManager.service </br>
+&nbsp;&nbsp;dbus-org.freedesktop.nm-dispatcher.service </br>
+&nbsp;&nbsp;firewalld.service </br>
+&nbsp;&nbsp;getty@.service </br>
+&nbsp;&nbsp;httpd.service </br>
+&nbsp;&nbsp;irqbalance.service </br>
+&nbsp;&nbsp;kdump.service </br>
+&nbsp;&nbsp;lvm2-monitor.service </br>
+&nbsp;&nbsp;mariadb.service </br>
+&nbsp;&nbsp;mdmonitor.service </br>
+&nbsp;&nbsp;microcode.service </br>
+&nbsp;&nbsp;mysql.service </br>
+&nbsp;&nbsp;mysqld.service </br>
+&nbsp;&nbsp;NetworkManager-dispatcher.service </br>
+&nbsp;&nbsp;NetworkManager.service </br>
+&nbsp;&nbsp;postfix.service </br>
+&nbsp;&nbsp;postgresql-9.6.service </br>
+&nbsp;&nbsp;rsyslog.service </br>
+&nbsp;&nbsp;sshd.service </br>
+&nbsp;&nbsp;sysstat.service </br>
+&nbsp;&nbsp;systemd-readahead-collect.service </br>
+&nbsp;&nbsp;systemd-readahead-drop.service </br>
+&nbsp;&nbsp;systemd-readahead-replay.service </br>
+&nbsp;&nbsp;tomcat.service </br>
+&nbsp;&nbsp;tuned.service </br>
+</td>  </tr>                                        
+ <tr>                                            
+ <td class=text-left>Wordpress </td>             
+ <td class=text-left><br>		    
+<font color=blue>Version:</font>&nbsp;&nbsp;4.8.1<hr><font color=blue>Path:</font>&nbsp;&nbsp;/var/www/html/wordpress/<hr><font color=blue>Plugins: </font> ---
+- 
+  name: akismet
+  status: active
+  update: available
+  version: 3.3.3
+- 
+  name: bbpress
+  status: active
+  update: none
+  version: 2.5.13
+- 
+  name: hello
+  status: active
+  update: none
+  version: "1.6"
+- 
+  name: jetpack
+  status: active
+  update: none
+  version: 5.2.1 
+</td>                                            
+ <td align=center>  Wordpress:4.8.1   </td>  </tr> 
+ <tr>                                            
+ <td class=text-left>drupal</td>             
+ <td class=text-left><br>		    
+<font color=blue>Version:</font>&nbsp;&nbsp;7.56<hr><font color=blue>Path:</font>&nbsp;&nbsp;/var/www/html/drupal-7.56/<hr><font color=blue>Modules: </font>Administration Development tools (admin_devel),Enabled
+Administration menu (admin_menu),Enabled
+Administration menu Toolbar style (admin_menu_toolbar),Enabled
+Aggregator (aggregator),Not installed
+Block (block),Enabled
+Blog (blog),Not installed
+Book (book),Not installed
+Color (color),Enabled
+Comment (comment),Enabled
+Contact (contact),Not installed
+Content translation (translation),Not installed
+Contextual links (contextual),Enabled
+Dashboard (dashboard),Enabled
+Database logging (dblog),Enabled
+Field (field),Enabled
+Field SQL storage (field_sql_storage),Enabled
+Field UI (field_ui),Enabled
+File (file),Enabled
+Filter (filter),Enabled
+Forum (forum),Not installed
+Help (help),Enabled
+Image (image),Enabled
+List (list),Enabled
+Locale (locale),Not installed
+Menu (menu),Enabled
+Node (node),Enabled
+Number (number),Enabled
+OpenID (openid),Not installed
+Options (options),Enabled
+Overlay (overlay),Disabled
+Path (path),Enabled
+PHP filter (php),Not installed
+Poll (poll),Not installed
+RDF (rdf),Enabled
+Search (search),Enabled
+Shortcut (shortcut),Enabled
+Statistics (statistics),Not installed
+Syslog (syslog),Not installed
+System (system),Enabled
+Taxonomy (taxonomy),Enabled
+Testing (simpletest),Not installed
+Text (text),Enabled
+Toolbar (toolbar),Disabled
+Tracker (tracker),Not installed
+Trigger (trigger),Not installed
+Update manager (update),Enabled
+User (user),Enabled
+Bartik (bartik),Enabled
+Garland (garland),Disabled
+Seven (seven),Enabled
+Stark (stark),Disabled
+Business (business),Enabled  
+ <hr size=4 color=#fd00cb /> 
+<font color=blue>Version:</font>&nbsp;&nbsp;8.3.5<hr><font color=blue>Path:</font>&nbsp;&nbsp;/var/www/html/drupal-8.3.5/<hr><font color=blue>Modules: </font>Admin Toolbar (admin_toolbar),Enabled
+Admin Toolbar Extra Tools (admin_toolbar_tools),Enabled
+Actions (action),Not installed
+Activity Tracker (tracker),Not installed
+Aggregator (aggregator),Not installed
+Automated Cron (automated_cron),Enabled
+Ban (ban),Not installed
+BigPipe (big_pipe),Not installed
+Block (block),Enabled
+Book (book),Not installed
+Breakpoint (breakpoint),Enabled
+CKEditor (ckeditor),Enabled
+Color (color),Enabled
+Comment (comment),Enabled
+Configuration Manager (config),Enabled
+Contact (contact),Enabled
+Contextual Links (contextual),Enabled
+Custom Block (block_content),Enabled
+Custom Menu Links (menu_link_content),Enabled
+Database Logging (dblog),Enabled
+Field (field),Enabled
+Field UI (field_ui),Enabled
+Filter (filter),Enabled
+Forum (forum),Not installed
+Help (help),Enabled
+History (history),Enabled
+Internal Dynamic Page Cache (dynamic_page_cache),Enabled
+Internal Page Cache (page_cache),Enabled
+Menu UI (menu_ui),Enabled
+Node (node),Enabled
+Path (path),Enabled
+Quick Edit (quickedit),Enabled
+RDF (rdf),Enabled
+Responsive Image (responsive_image),Not installed
+Search (search),Enabled
+Shortcut (shortcut),Enabled
+Statistics (statistics),Not installed
+Syslog (syslog),Not installed
+System (system),Enabled
+Taxonomy (taxonomy),Enabled
+Testing (simpletest),Not installed
+Text Editor (editor),Enabled
+Toolbar (toolbar),Enabled
+Tour (tour),Enabled
+Update Manager (update),Enabled
+User (user),Enabled
+Views (views),Enabled
+Views UI (views_ui),Enabled
+Content Moderation (content_moderation),Not installed
+Datetime Range (datetime_range),Not installed
+Field Layout (field_layout),Not installed
+Inline Form Errors (inline_form_errors),Not installed
+Layout Discovery (layout_discovery),Not installed
+Migrate (migrate),Not installed
+Migrate Drupal (migrate_drupal),Not installed
+Migrate Drupal UI (migrate_drupal_ui),Not installed
+Place Blocks (block_place),Not installed
+Settings Tray (outside_in),Not installed
+Workflows (workflows),Not installed
+Datetime (datetime),Enabled
+File (file),Enabled
+Image (image),Enabled
+Link (link),Enabled
+Options (options),Enabled
+Telephone (telephone),Not installed
+Text (text),Enabled
+Configuration Translation (config_translation),Not installed
+Content Translation (content_translation),Not installed
+Interface Translation (locale),Not installed
+Language (language),Not installed
+HAL (hal),Not installed
+HTTP Basic Authentication (basic_auth),Not installed
+RESTful Web Services (rest),Not installed
+Serialization (serialization),Not installed
+Bartik (bartik),Enabled
+Drupal8 Zymphonies Theme (drupal8_zymphonies_theme),Enabled
+Seven (seven),Enabled
+Stark (stark),Disabled  
+</td>                                            
+ <td align=center>  Drupal:8.3.6    </td>  </tr> 
+ <tr>                                            
+ <td class=text-left>NodeJS</td>              
+ <td class=text-left><br>		    
+<font color=blue>Version:</font>&nbsp;&nbsp;v8.4.0<hr><font color=blue>Path:</font>&nbsp;&nbsp;/usr/bin/node 
+</td>                                          
+ <td align=center>  NodeJS:8.4.0         </td>  </tr> 
+ <tr>                                            
+ <td class=text-left>NPM</td>              
+ <td class=text-left><br>		    
+<font color=blue>Version:</font>&nbsp;&nbsp;5.3.0<hr><font color=blue>Path:</font>&nbsp;&nbsp;/usr/lib/node_modules/npm/bin/npm-cli.js 
+</td>                                          
+ <td align=center>  NPM:5.3.0         </td>  </tr> 
+ <tr>                                            
+ <td class=text-left>Nginx</td>             
+ <td class=text-left><br>		    
+<font color=blue>Version:</font>&nbsp;&nbsp; nginx/1.10.2<hr><font color=blue>Path:</font>&nbsp;&nbsp;/usr/sbin/nginx<hr><font color=blue>Modules: </font> http_ssl_module 
+http_v2_module 
+http_realip_module 
+http_addition_module 
+http_xslt_module=dynamic 
+http_image_filter_module=dynamic 
+http_geoip_module=dynamic 
+http_sub_module 
+http_dav_module 
+http_flv_module 
+http_mp4_module 
+http_gunzip_module 
+http_gzip_static_module 
+http_random_index_module 
+http_secure_link_module 
+http_degradation_module 
+http_slice_module 
+http_stub_status_module 
+http_perl_module=dynamic 
+mail_ssl_module 
+stream_ssl_module 
+google_perftools_module  
+</td>                                            
+ <td align=center>  Nginx:1.12.1   </td>  </tr> 
+ <tr>                                                            
+ <td class=text-left>SELinux</td>   
+ <td class=text-left><br>		                        
+SeLinux status:&nbsp;&nbsp Disabled
+</td> </tr>              
+ <tr>                                                            
+ <td class=text-left>Firewall</td>  				
+ <td class=text-left><br>		                        
+Firewall status:&nbsp;&nbsp Active 
+</td> </tr>  
+ <tr>                                            
+ <td class=text-left>Opened Ports </td>      
+ <td class=text-left><br>		    
+Port:&nbsp;&nbsp22
+ <hr size=4 color=#fd00cb /> 
+Port:&nbsp;&nbsp8080
+</td> </tr>                                           
+	</tbody>						
+	</table>						
+ </br>   			 			
+	</br>							
+ </body>                                                 
+ </html>                                                 
