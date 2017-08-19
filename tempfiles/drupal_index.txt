@@ -1,2 +1,0 @@
-/var/www/html/drupal-7.56/
-/var/www/html/drupal-8.3.5/
