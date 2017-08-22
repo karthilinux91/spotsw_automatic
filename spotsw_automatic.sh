@@ -382,6 +382,10 @@ then
 else
   echo "Apache httpd not found!!"
   echo "\"apache"\":["\"not detected"\"], >> report.json 
+	
+	echo  " <tr> <td class=""text-left"">Apache</td>"       >>  report.html
+	echo  " <td align=center>   Not Detected </td> "        >> report.html
+	echo  " <td align=center>  Apache:2.4.27</td></tr> "    >> report.html
 fi
 
 ########################################################################
@@ -437,6 +441,9 @@ then
 else
   echo "PHP not found!"
   echo "\"php"\":["\"not detected"\"], >> report.json 
+  echo  " <tr> <td class=""text-left"">Php</td>"       >>  report.html
+	echo  " <td align=center>   Not Detected </td> "        >> report.html
+	echo  " <td align=center>  PHP:7.1.7</td></tr> "    >> report.html
 fi
 
 ########################################################################
@@ -486,6 +493,10 @@ then
 else
   echo "Tomcat not found!"
   echo "\"tomcat"\":["\"not detected"\"], >> report.json 
+
+  echo  " <tr> <td class=""text-left"">Tomcat</td>"       >>  report.html
+	echo  " <td align=center>   Not Detected </td> "        >> report.html
+	echo  " <td align=center>  Tomcat:8.5.16 </td></tr> "    >> report.html
 fi
 
 ########################################################################
@@ -537,6 +548,9 @@ then
 else
   echo "Java not found !"
   echo "\"java"\":["\"not detected"\"], >> report.json 
+   echo  " <tr> <td class=""text-left"">JAVA</td>"       >>  report.html
+	echo  " <td align=center>   Not Detected </td> "        >> report.html
+	echo  " <td align=center>  Open JDK Java: 1.8.0 </td></tr> "    >> report.html
 fi
 
 ########################################################################
@@ -584,6 +598,9 @@ then
 else
   echo "PostgreSQl_Server not found!"
   echo "\"postgresql_server"\":["\"not detected"\"], >> report.json 
+    echo  " <tr> <td class=""text-left"">PostgreSQL Server</td>"       >>  report.html
+	echo  " <td align=center>   Not Detected </td> "        >> report.html
+	echo  " <td align=center>  PostgreSQL Server:9.6.3 </td></tr> "    >> report.html
 fi
 
 ########################################################################
@@ -636,6 +653,9 @@ then
 else
   echo "PostgreSQl_Client not found !"
   echo "\"postgresql_client"\":["\"not detected"\"], >> report.json 
+    echo  " <tr> <td class=""text-left"">PostgreSQL Client</td>"       >>  report.html
+	echo  " <td align=center>   Not Detected </td> "        >> report.html
+	echo  " <td align=center> Postgres Client:9.6.3 </td></tr> "    >> report.html
 fi
 
 ########################################################################
@@ -688,6 +708,9 @@ then
 else
   echo "MySQL_MariaDB_Server not found !"
   echo "\"mysql_mariadb_server"\":["\"not detected"\"], >> report.json 
+   echo  " <tr> <td class=""text-left"">MySQL or MariaDB Server</td>"       >>  report.html
+	echo  " <td align=center>   Not Detected </td> "        >> report.html
+	echo  " <td align=center> MySQL Server : 5.7.19 0r MariaDB server: 10.2.7 </td></tr> "    >> report.html
 fi
 
 
@@ -740,6 +763,9 @@ then
 else
   echo "MySQL_MariaDB_Client not found !"
   echo "\"mysql_mariadb_client"\":["\"not detected"\"], >> report.json 
+    echo  " <tr> <td class=""text-left"">MySQL or MariaDB Client</td>"       >>  report.html
+	echo  " <td align=center>   Not Detected </td> "        >> report.html
+	echo  " <td align=center> MySQL client:5.7.19  or Mariadb client:10.2.7   </td></tr> "    >> report.html
 fi
 
 
@@ -790,6 +816,9 @@ then
 else
   echo "Perl not found ! "
   echo "\"perl"\":["\"not detected"\"], >> report.json 
+    echo  " <tr> <td class=""text-left"">Perl </td>"       >>  report.html
+	echo  " <td align=center>   Not Detected </td> "        >> report.html
+	echo  " <td align=center>Perl:5.26.0  </td></tr> "    >> report.html
 fi
 
 
@@ -840,6 +869,9 @@ then
 else
   echo "Python not found!"
   echo "\"python"\":["\"not detected"\"], >> report.json 
+    echo  " <tr> <td class=""text-left"">Python </td>"       >>  report.html
+	echo  " <td align=center>   Not Detected </td> "        >> report.html
+	echo  " <td align=center>Python:3.6.2  </td></tr> "    >> report.html
 fi
 
 ########################################################################
@@ -1001,6 +1033,9 @@ then
 else
   echo "wordpress not found!!"
   echo "\"wordpress"\":["\"not detected"\"], >> report.json 
+   echo  " <tr> <td class=""text-left"">Wordpress </td>"       >>  report.html
+	echo  " <td align=center>   Not Detected </td> "        >> report.html
+	echo  " <td align=center>Wordpress:4.8.1  </td></tr> "    >> report.html
 fi
 cd $mainpath
 
@@ -1044,7 +1079,7 @@ if [ -s ${FILENAME2} ]
 then
     echo "File has data"
     echo  " <tr>                                            "       >>  report.html
-    echo  " <td class=""text-left"">drupal</td>             "       >>  report.html
+    echo  " <td class=""text-left"">Drupal</td>             "       >>  report.html
     echo  " <td class=""text-left""><br>		    "  	    >>  report.html
     echo "\"drupal"\" : "[" >> report.json
     total="$(cat $mainpath/tempfiles/drupal_index.txt  | wc -l )"
@@ -1089,6 +1124,9 @@ then
 else
   echo "Drupal not found!!"
   echo "\"drupal"\":["\"not detected"\"], >> report.json 
+   echo  " <tr> <td class=""text-left"">Drupal</td>"       >>  report.html
+	echo  " <td align=center>   Not Detected </td> "        >> report.html
+	echo  " <td align=center> Drupal:8.3.6   </td></tr> "    >> report.html
 fi
 cd $mainpath
 
@@ -1140,6 +1178,9 @@ then
 else
   echo "NodeJS not found!"
   echo "\"node"\":["\"not detected"\"], >> report.json 
+  echo  " <tr> <td class=""text-left"">NodeJS</td>"       >>  report.html
+	echo  " <td align=center>   Not Detected </td> "        >> report.html
+	echo  " <td align=center> NodeJS:8.4.0     </td></tr> "    >> report.html
 fi
 
 #########################################################################################
@@ -1186,6 +1227,9 @@ then
 else
   echo "NPM not found!"
   echo "\"npm"\":["\"not detected"\"], >> report.json 
+  echo  " <tr> <td class=""text-left"">NPM</td>"       >>  report.html
+	echo  " <td align=center>   Not Detected </td> "        >> report.html
+	echo  " <td align=center>NPM:5.3.0        </td></tr> "    >> report.html
 fi
 
 echo ""
@@ -1243,6 +1287,9 @@ then
 else
   echo "Nginx not found!!"
   echo "\"nginx"\":["\"not detected"\"], >> report.json 
+  echo  " <tr> <td class=""text-left"">Nginx</td>"       >>  report.html
+	echo  " <td align=center>   Not Detected </td> "        >> report.html
+	echo  " <td align=center>Nginx:1.12.1        </td></tr> "    >> report.html
 fi
 
 ########################################################################
@@ -1292,10 +1339,13 @@ then
 	  fi 
 	done
    	echo  "</td>                                            "        >>  report.html
-        echo  " <td align=center>  Nginx:1.12.1   </td>  </tr> "        >> report.html
+        echo  " <td align=center>  LiteSpeed:1.4.27 </td>  </tr> "        >> report.html
 else
   echo "Nginx not found!!"
   echo "\"nginx"\":["\"not detected"\"], >> report.json 
+  echo  " <tr> <td class=""text-left"">LiteSpeed</td>"       >>  report.html
+	echo  " <td align=center>   Not Detected </td> "        >> report.html
+	echo  " <td align=center>LiteSpeed:1.4.27 </td></tr> "    >> report.html
 fi
 
 
@@ -1466,20 +1516,5 @@ echo " Time (minutes or seconds ) :" $tottime
 #################################################
 echo "Send json data to server ..."
 curl -u admin:admin -H "Content-Type: application/json" -X POST -d @$file_name.json http://$1:8080/test_service/services/rest/SearchingManage/fetchDataBy/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+echo ""
+echo ""
