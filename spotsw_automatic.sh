@@ -21,7 +21,7 @@
 #         NOTES: Need mlocate package for find the path of software packages
 #        AUTHOR: karthikeyan U
 #       CREATED: Monday 14 August 2017 9:30:47  IST
-#      REVISION: 0.1 
+#      REVISION: 0.2 
 ####################################################################################################################
 mainpath=`pwd`
 begin=$(date +%s) 
@@ -38,17 +38,26 @@ lsb_release -a 2&>$mainpath/tempfiles/1
 check="$(echo $? )"
 if [ $check -eq 0 ]
 then
+	echo "lsb-release"
 	name=`lsb_release -i | awk -F":" '{print $2}' | xargs`
         flag_version=`lsb_release -rs | cut -c1-1`
 	#flag_version=`printf "%.0f" $flag_version`
-
 else
+	cat /etc/os-release 2&>$mainpath/tempfiles/1	
+	if [ $check -eq 0 ]
+	then 
+	echo "os-release"
 	name=`cat /etc/os-release  | awk '/^ID=/{print}' | cut -d '"' -f 2`
-	flag_version=`cat /etc/os-release  | awk '/^VERSION_ID/{print}' | cut -d '=' -f 2 |  tr -d '"'| cut -c1-1`
-	#flag_version=`printf "%.0f" $flag_version`
+	flag_version=`cat /etc/os-release  | awk '/^VERSION_ID/{print}' | cut -d '=' -f 2 |  tr -d '"'| cut -c1-1|head -n1`
+	else 
+	echo "redhat-release"
+	name=`cat /etc/redhat-release| awk '{print $1}'|xargs`
+	flag_version=`cat /etc/redhat-release | grep -Eo '[+-]?[0-9]+([.][0-9]+)?'|cut -c1-1| head -n1`
+	fi 
 fi
 
-if [ "$name" = "CentOS" ] || [ "$name" = "centos"  ] || [ "$name" = "Red Hat Enterprise Linux Server" ] || [  "$name" = "RedHatEnterpriseServer" ] || [ "$name" = "Scientific" ] || [ "$name" = "rhel" ]
+
+if [ "$name" = "CentOS" ] || [ "$name" = "centos"  ] || [ "$name" = "Red Hat Enterprise Linux Server" ] || [  "$name" = "RedHatEnterpriseServer" ] || [ "$name" = "Scientific" ] || [ "$name" = "rhel" ] || [ "$name" = "Red" ] || [ "$name" = "CentOS" ]
 then 
    flag_os=rhel	
 else 
@@ -314,39 +323,12 @@ echo  "	<tbody class=""table-hover"">				"	>>  report.html
 
 ##############################################################################################
 
-
-
-
-
-########################################################################
-#                   CHECK mlocate PACKAGE                              #
-########################################################################
-
-#rpm -qa | grep mlocate
-#check="$(echo $? )"
-#if [ $check -eq 0 ]
-#then
-#   echo "mlocate is  installed "
-#   echo "wait few minutes......."
-#   updatedb
-#   echo "updatedb finished" 
-#else
-#   echo "mlocate is not installed"
-#   yum localinstall -y  mlocate-0.26-6.el7.x86_64.rpm 
-#   echo "wait few minutes......."
-#   updatedb
-#   echo "updatedb finished"
-#fi
-#echo ""
-#echo ""
-
 ##########################################################################
 # 			mlocate path	   	                         #
 ##########################################################################
 
 echo "wait few minutes ..............updatedb process"
 ./packages/updatedb$flag_version --require-visibility 0 -o mlocate.db
-
 
 
 ########################################################################
@@ -377,13 +359,7 @@ then
 	   path=${array[c]}
 	   modules="`${array[c]} -M 2>&1 |  grep -v "Loaded Modules:"`"
            ${array[c]} -M 2>&1 |  grep -v "Loaded Modules:" | awk '{$1=$1;print}' >$mainpath/tempfiles/apachemod.txt 
-	   #apachemod_total="$(cat $mainpath/tempfiles/apachemod.txt  | wc -l )"	
-	   #echo $apachemod_total
-           cat $mainpath/tempfiles/apachemod.txt | sed  's/\(.*\)/"\1",/g' | awk '{a[NR]=$0} END {for (i=1;i<NR;i++) print a[i];sub(/.$/,"",a[NR]);print a[NR]}'   > $mainpath/tempfiles/apachemod_result.txt 
-
-
-
-
+	       cat $mainpath/tempfiles/apachemod.txt | sed  's/\(.*\)/"\1",/g' | awk '{a[NR]=$0} END {for (i=1;i<NR;i++) print a[i];sub(/.$/,"",a[NR]);print a[NR]}'   > $mainpath/tempfiles/apachemod_result.txt 
 
 	   echo "Version : " $version
 	   echo "path:" $path
@@ -394,12 +370,12 @@ then
 
 
            if [ $c -lt $total ]
-	   then
+		   then
          	echo " <hr size="4" color="#fd00cb" /> " >> report.html
 	        echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\"",""\"modules"\":[`cat 			$mainpath/tempfiles/apachemod_result.txt`]"}" ",">>  report.json
            else 
                 echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\"",""\"modules"\":[`cat 			$mainpath/tempfiles/apachemod_result.txt`]"}" "],">>  report.json 
-	  fi 
+		   fi 
 	done
    	echo  "</td>                                            "        >>  report.html
         echo  " <td align=center>  Apache:2.4.27   </td>  </tr> "        >> report.html
@@ -439,32 +415,21 @@ then
 	   path=${array[c]}
 	   modules="`${array[c]} -m 2>&1`"
 	   ${array[c]} -m 2>&1 | awk '{$1=$1;print}' >$mainpath/tempfiles/phpmod.txt
-           cat $mainpath/tempfiles/phpmod.txt | sed  's/\(.*\)/"\1",/g' | awk '{a[NR]=$0} END {for (i=1;i<NR;i++) 
+       cat $mainpath/tempfiles/phpmod.txt | sed  's/\(.*\)/"\1",/g' | awk '{a[NR]=$0} END {for (i=1;i<NR;i++) 
 	   print a  [i];sub(/.$/,"", a[NR]);print a[NR]}'   > $mainpath/tempfiles/phpmod_result.txt
-
-
-
-
-
 	   echo "Version : " $version
 	   echo "path:" $path
 	   echo "modules:" $modules
 	   echo ""
 	   echo ""
-
-	   
 	   echo "<font color="blue">Version:</font>&nbsp;&nbsp;$version<hr><font color="blue">Path:</font>&nbsp;&nbsp;$path<hr><font color="blue">Modules:</font>$modules " >>report.html
-
-
-
-
-           if [ $c -lt $total ]
+       if [ $c -lt $total ]
 	   then
-         	echo " <hr size="4" color="#fd00cb" /> " >> report.html
+       	echo " <hr size="4" color="#fd00cb" /> " >> report.html
 		echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\"",""\"modules"\":[`cat 			$mainpath/tempfiles/phpmod_result.txt`]"}" ",">>  report.json
-           else 
-                echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\"",""\"modules"\":[`cat 			$mainpath/tempfiles/phpmod_result.txt`]"}" "],">>  report.json
-	  fi 
+       else 
+        echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\"",""\"modules"\":[`cat 			$mainpath/tempfiles/phpmod_result.txt`]"}" "],">>  report.json
+       fi 
 	done
 
    	echo  "</td>                                          "        >>  report.html
@@ -474,7 +439,6 @@ else
   echo "\"php"\":["\"not detected"\"], >> report.json 
 fi
 
-
 ########################################################################
 #               TOMCAT  version,path                                   #
 ########################################################################
@@ -483,9 +447,7 @@ echo "Tomcat"
 $mainpath/packages/locate$flag_version -r /catalina.jar$ -d $mainpath/mlocate.db | xargs file 2>&1 | grep Zip  | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
 FILENAME="$mainpath/tempfiles/store.txt"
 
-
 ###########################>>>>>>>>>>>>>>>>>>>>>>
-
 if [ -s ${FILENAME} ]
 then
     echo "File has data"
@@ -505,22 +467,17 @@ then
 	do
 	   version="`java -cp ${array[c]} org.apache.catalina.util.ServerInfo  2>&1 | grep number  | awk '{print $3}'`" 	
 	   path=${array[c]}
-	 # modules="`${array[c]} -m 2>&1`"
-
 	   echo "Version : " $version
 	   echo "path:" $path
-	 #  echo "modules:" $modules
 	   echo ""
 	   echo ""
-
-	   
 	   echo "<font color="blue">Version:</font>&nbsp;&nbsp;$version<hr><font color="blue">Path:</font>&nbsp;&nbsp;$path " >>report.html
-           if [ $c -lt $total ]
+       if [ $c -lt $total ]
 	   then
          	echo " <hr size="4" color="#fd00cb" /> " >> report.html
-		echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\" "}," >>  report.json
-           else 
-                echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\""}]," >>  report.json
+			echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\" "}," >>  report.json
+       else 
+            echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\""}]," >>  report.json
 	  fi 
 	done
 
@@ -567,12 +524,12 @@ then
 	   echo ""
 	   echo ""
   	   echo "<font color="blue">Version:</font>&nbsp;&nbsp;$version<hr><font color="blue">Path:</font>&nbsp;&nbsp;$path " >>report.html
-           if [ $c -lt $total ]
+       if [ $c -lt $total ]
 	   then
-         	echo " <hr size="4" color="#fd00cb" /> " >> report.html
+      	echo " <hr size="4" color="#fd00cb" /> " >> report.html
 		echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\" "}," >>  report.json
-           else 
-                echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\""}]," >>  report.json
+       else 
+        echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\""}]," >>  report.json
 	  fi 
 	done
    	echo  "</td>                                          "        >>  report.html
@@ -613,26 +570,21 @@ then
 	   echo "path:" $path
 	   echo ""
 	   echo ""
-
-	   
 	   echo "<font color="blue">Version:</font>&nbsp;&nbsp;$version<hr><font color="blue">Path:</font>&nbsp;&nbsp;$path " >>report.html
-           if [ $c -lt $total ]
+       if [ $c -lt $total ]
 	   then
-         	echo " <hr size="4" color="#fd00cb" /> " >> report.html
+       	echo " <hr size="4" color="#fd00cb" /> " >> report.html
 		echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\" "}," >>  report.json
-           else 
-                echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\""}]," >>  report.json
+       else 
+        echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\""}]," >>  report.json
 	  fi 
 	done
-
    	echo  "</td>                                          "        >>  report.html
 	echo  " <td align=center>  PostgreSQL Server:9.6.3         </td>  </tr> "        >> report.html
-	
 else
   echo "PostgreSQl_Server not found!"
   echo "\"postgresql_server"\":["\"not detected"\"], >> report.json 
 fi
-
 
 ########################################################################
 #                     PostgresSQl  Client         		       #
@@ -669,12 +621,12 @@ then
 
 	   
 	   echo "<font color="blue">Version:</font>&nbsp;&nbsp;$version<hr><font color="blue">Path:</font>&nbsp;&nbsp;$path " >>report.html
-           if [ $c -lt $total ]
+       if [ $c -lt $total ]
 	   then
-         	echo " <hr size="4" color="#fd00cb" /> " >> report.html
+      	echo " <hr size="4" color="#fd00cb" /> " >> report.html
 		echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\" "}," >>  report.json
-           else 
-                echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\""}]," >>  report.json	
+       else 
+        echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\""}]," >>  report.json	
 	  fi 
 	done
 
@@ -721,12 +673,12 @@ then
 
 	   
 	   echo "<font color="blue">Version:</font>&nbsp;&nbsp;$version<hr><font color="blue">Path:</font>&nbsp;&nbsp;$path " >>report.html
-           if [ $c -lt $total ]
+       if [ $c -lt $total ]
 	   then
-         	echo " <hr size="4" color="#fd00cb" /> " >> report.html
+      	echo " <hr size="4" color="#fd00cb" /> " >> report.html
 		echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\" "}," >>  report.json
-           else 
-                echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\""}]," >>  report.json
+       else 
+        echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\""}]," >>  report.json
 	  fi 
 	done
 
@@ -774,12 +726,12 @@ then
 
 	   
 	   echo "<font color="blue">Version:</font>&nbsp;&nbsp;$version<hr><font color="blue">Path:</font>&nbsp;&nbsp;$path " >>report.html
-           if [ $c -lt $total ]
+       if [ $c -lt $total ]
 	   then
-         	echo " <hr size="4" color="#fd00cb" /> " >> report.html
+       	echo " <hr size="4" color="#fd00cb" /> " >> report.html
 		echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\" "}," >>  report.json
-           else 
-                echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\""}]," >>  report.json
+       else 
+        echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\""}]," >>  report.json
 	  fi 
 	done
 
@@ -825,12 +777,12 @@ then
 	   echo ""
 	   echo ""
   	   echo "<font color="blue">Version:</font>&nbsp;&nbsp;$version<hr><font color="blue">Path:</font>&nbsp;&nbsp;$path " >>report.html
-           if [ $c -lt $total ]
+       if [ $c -lt $total ]
 	   then
-         	echo " <hr size="4" color="#fd00cb" /> " >> report.html
+      	echo " <hr size="4" color="#fd00cb" /> " >> report.html
 		echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\" "}," >>  report.json
-           else 
-                echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\""}]," >>  report.json
+       else 
+        echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\""}]," >>  report.json
 	  fi 
 	done
    	echo  "</td>                                          "        >>  report.html
@@ -875,12 +827,12 @@ then
 	   echo ""
 	   echo ""
   	   echo "<font color="blue">Version:</font>&nbsp;&nbsp;$version<hr><font color="blue">Path:</font>&nbsp;&nbsp;$path " >>report.html
-           if [ $c -lt $total ]
+       if [ $c -lt $total ]
 	   then
-         	echo " <hr size="4" color="#fd00cb" /> " >> report.html
+      	echo " <hr size="4" color="#fd00cb" /> " >> report.html
 		echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\" "}," >>  report.json
-           else 
-                echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\""}]," >>  report.json
+       else 
+        echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\""}]," >>  report.json
 	  fi 
 	done
    	echo  "</td>                                          "        >>  report.html
@@ -890,12 +842,8 @@ else
   echo "\"python"\":["\"not detected"\"], >> report.json 
 fi
 
-
-
-
-
 ########################################################################
-#                      List of running service 			       #
+#                      List of running service 			       		   #
 ########################################################################
 
 >$mainpath/tempfiles/store.txt	                   
@@ -909,15 +857,10 @@ then
 	service --status-all 2>&1 | grep "is running" | awk -F"(" '{print $1}' >$mainpath/tempfiles/store.txt
 fi	
 
-
 cat $mainpath/tempfiles/store.txt | sed  's/\(.*\)/"\1",/g' | awk '{a[NR]=$0} END {for (i=1;i<NR;i++) print a[i];sub(/.$/,"",a[NR]);print a[NR]}'   > $mainpath/tempfiles/running_services_result.txt
-
-
-
 FILENAME="$mainpath/tempfiles/store.txt"
 
 #########################################################################
-
 if [ -s ${FILENAME} ]
 then
     echo  " <tr>                                            "       >>  report.html
@@ -945,13 +888,7 @@ else
   echo "File empty!!"
   echo "\"running_services"\":{}, >> report.json 
 fi
-
-
-
 echo "running services block"
-
-
-
 
 ########################################################################
 #                      List of Enabled  service            	       #
@@ -1005,8 +942,6 @@ else
   echo "\"enabled_services"\":{}, >> report.json 
 fi
 echo "Enabled services block"
-
-
 
 ########################################################################
 #               Wordpress  version,path and plugins	               #
@@ -1069,21 +1004,16 @@ else
 fi
 cd $mainpath
 
-
 ########################################################################
 #               Drupal  version,path and modules	               #
 ########################################################################
-
 echo "Drupal"
-
 >$mainpath/tempfiles/tmpdrupal.txt
 >$mainpath/tempfiles/drupal_index.txt
 >$mainpath/tempfiles/store.txt
-
 $mainpath/packages/locate$flag_version -r index.php$ -d $mainpath/mlocate.db >$mainpath/tempfiles/store.txt
 FILENAME1="$mainpath/tempfiles/store.txt"
 echo mainpath: $mainpath 
-
 if [ -s ${FILENAME1} ]
 then
     total="$(cat $mainpath/tempfiles/store.txt  | wc -l )"
@@ -1101,7 +1031,6 @@ for (( c=1; c<=$total; c++ ))
            if [ $v -eq 0 ]
            then
            echo ${array[c]} | awk -F "index.php" '{print $1}' >>$mainpath/tempfiles/drupal_index.txt  
-
            fi
         done
 fi
@@ -1292,12 +1221,7 @@ then
 	   path=${array[c]}
 	   modules="`${array[c]} -V 2>&1 | tr -- - '\n' | grep module | grep -v 'modules\|path'`"
        ${array[c]} -V 2>&1 | tr -- - '\n' | grep module | grep -v 'modules\|path' >$mainpath/tempfiles/nginxmod.txt 
-	   
-           cat $mainpath/tempfiles/nginxmod.txt | sed  's/\(.*\)/"\1",/g' | awk '{a[NR]=$0} END {for (i=1;i<NR;i++) print a[i];sub(/.$/,"",a[NR]);print a[NR]}'   > $mainpath/tempfiles/nginxmod_result.txt 
-
-
-
-
+       cat $mainpath/tempfiles/nginxmod.txt | sed  's/\(.*\)/"\1",/g' | awk '{a[NR]=$0} END {for (i=1;i<NR;i++) print a[i];sub(/.$/,"",a[NR]);print a[NR]}'   > $mainpath/tempfiles/nginxmod_result.txt 
 
 	   echo "Version : " $version
 	   echo "path:" $path
@@ -1306,14 +1230,13 @@ then
 	   echo ""
 	   echo "<font color="blue">Version:</font>&nbsp;&nbsp;$version<hr><font color="blue">Path:</font>&nbsp;&nbsp;$path<hr><font color="blue">Modules: </font> $modules " >>report.html
 
-
-           if [ $c -lt $total ]
+       if [ $c -lt $total ]
 	   then
-         	echo " <hr size="4" color="#fd00cb" /> " >> report.html
-	        echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\"",""\"modules"\":[`cat 			$mainpath/tempfiles/nginxmod_result.txt`]"}" ",">>  report.json
-           else 
-                echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\"",""\"modules"\":[`cat 			$mainpath/tempfiles/nginxmod_result.txt`]"}" "],">>  report.json 
-	  fi 
+       	echo " <hr size="4" color="#fd00cb" /> " >> report.html
+        echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\"",""\"modules"\":[`cat 	$mainpath/tempfiles/nginxmod_result.txt`]"}" ",">>  report.json
+       else 
+        echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\"",""\"modules"\":[`cat 	$mainpath/tempfiles/nginxmod_result.txt`]"}" "],">>  report.json 
+	   fi 
 	done
    	echo  "</td>                                            "        >>  report.html
         echo  " <td align=center>  Nginx:1.12.1   </td>  </tr> "        >> report.html
@@ -1323,7 +1246,61 @@ else
 fi
 
 ########################################################################
-#                     SeLinux  status                                  #
+#               Litespeed Service  version,path and modules            #
+########################################################################
+echo "litespeed"
+>$mainpath/tempfiles/store.txt
+$mainpath/packages/locate$flag_version -r bin/openlitespeed$ -d $mainpath/mlocate.db | xargs file  2>&1 | grep dynamically  | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
+FILENAME="$mainpath/tempfiles/store.txt"
+if [ -s ${FILENAME} ]
+then
+    echo "File has data"
+    echo  " <tr>                                            "       >>  report.html
+    echo  " <td class=""text-left"">LiteSpeed</td>             "       >>  report.html
+    echo  " <td class=""text-left""><br>		    "  	    >>  report.html
+    echo "\"litespeed"\" : "[" >> report.json
+    total="$(cat $mainpath/tempfiles/store.txt  | wc -l )"
+	i=1
+	while IFS= read -r var
+	do
+	  array[ $i ]=$var
+	  (( i++ ))
+	done < "$mainpath/tempfiles/store.txt"
+
+	for (( c=1; c<=$total; c++ ))
+	do
+	   version="`${array[c]} -v 2>&1  | grep Open | awk -F"Open" '{print $1}'`"
+	   path=${array[c]}
+	   modules="`${array[c]} -v 2>&1 | awk '{$1=$1;print}' | grep -v  'module\|Open' | grep '[^[:blank:]]'`"
+       ${array[c]} -v 2>&1 | awk '{$1=$1;print}' | grep -v  'module\|Open' | grep '[^[:blank:]]' >$mainpath/tempfiles/nginxmod.txt 
+	   
+	   cat $mainpath/tempfiles/nginxmod.txt | sed  's/\(.*\)/"\1",/g' | awk '{a[NR]=$0} END {for (i=1;i<NR;i++) print a[i];sub(/.$/,"",a[NR]);print a[NR]}'   > $mainpath/tempfiles/nginxmod_result.txt 
+
+	   echo "Version : " $version
+	   echo "path:" $path
+	   echo "modules:" $modules
+	   echo ""
+	   echo ""
+	   echo "<font color="blue">Version:</font>&nbsp;&nbsp;$version<hr><font color="blue">Path:</font>&nbsp;&nbsp;$path<hr><font color="blue">Modules: </font> $modules " >>report.html
+
+       if [ $c -lt $total ]
+	   then
+       	echo " <hr size="4" color="#fd00cb" /> " >> report.html
+        echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\"",""\"modules"\":[`cat $mainpath/tempfiles/nginxmod_result.txt`]"}" ",">>  report.json
+       else 
+        echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\"",""\"modules"\":[`cat $mainpath/tempfiles/nginxmod_result.txt`]"}" "],">>  report.json 
+	  fi 
+	done
+   	echo  "</td>                                            "        >>  report.html
+        echo  " <td align=center>  Nginx:1.12.1   </td>  </tr> "        >> report.html
+else
+  echo "Nginx not found!!"
+  echo "\"nginx"\":["\"not detected"\"], >> report.json 
+fi
+
+
+########################################################################
+#                     SELinux  status                                  #
 ########################################################################
 echo  " <tr>                                                            "       >>  report.html
 echo  " <td class=""text-left"">SELinux</td>   "       >>  report.html
@@ -1338,10 +1315,6 @@ echo "SELinux status:" ` getenforce`
 ########################################################################
 #                    Firewall  status                                  #
 ########################################################################
-
-
-
-
 echo  " <tr>                                                            "       >>  report.html
 echo  " <td class=""text-left"">Firewall</td>  				"       >>  report.html
 echo  " <td class=""text-left""><br>		                        "  	>>  report.html
@@ -1376,17 +1349,6 @@ fi
 echo "Firewall status:&nbsp;&nbsp $status "        >>report.html
 echo  "</td> </tr>  "                              >>report.html
 echo ""\"firewall_status"\": "\"$status"\","       >>report.json                
-
-                
-
-
-
-
-
-
-
-
-
 
 
 ########################################################################
@@ -1427,11 +1389,11 @@ then
 		for (( c=1; c<=$total; c++ ))
 		do
 	  	   echo "Port:&nbsp;&nbsp${array[c]}" >>report.html
-	           if [ $c -lt $total ]
+           if [ $c -lt $total ]
 		   then
 	         	echo " <hr size="4" color="#fd00cb" /> " >> report.html
 	                echo "\"${array[c]}"\",	         >>  report.json
-        	   else 
+       	   else 
 	                echo "\"${array[c]} "\"	  		 >>  report.json
 		   fi 
 		done
@@ -1450,22 +1412,10 @@ fi
 echo ""
 echo ""
 
-##############################################################################
-
-
-
-
-
-
-
-
-
-
-
 ####################################################################################
 #                             End of the table html part                           #
 ####################################################################################
-            
+    
 echo  "	</tbody>						"	>>  report.html
 echo  "	</table>						"	>>  report.html
 echo  " </br>   			 			"	>>  report.html
@@ -1473,14 +1423,9 @@ echo  "	</br>							"	>>  report.html
 echo  " </body>                                                 "       >>  report.html
 echo  " </html>                                                 "       >>  report.html
 
-
-
 #################################
 # file name conversion          #
 #################################
-
-
-
 
 ip=`echo $vipaddress | awk '{print $1}'`
 #echo $ip 
@@ -1491,13 +1436,9 @@ echo $file_name.json
 mv report.html   $file_name.html
 mv report.json   $file_name.json 
 
-
 #######################################################
 #           Report trigger                            # 
 #######################################################
-
-
-
 
 which firefox   >$mainpath/tempfiles/out 2>&1 >$mainpath/tempfiles/error.txt
 value="$(echo $? )"
@@ -1520,13 +1461,10 @@ tottime=$(expr $end - $begin)
 echo " Time (minutes or seconds ) :" $tottime 
 
 
-
-
 #################################################
 #    Send json data to web service              #
 #################################################
-
-
+echo "Send json data to server ..."
 curl -u admin:admin -H "Content-Type: application/json" -X POST -d @$file_name.json http://$1:8080/test_service/services/rest/SearchingManage/fetchDataBy/
 
 
