@@ -365,7 +365,6 @@ then
 	   echo "path:" $path
 	   echo "modules:" $modules
 	   echo ""
-	   echo ""
 	   echo "<font color="blue">Version:</font>&nbsp;&nbsp;$version<hr><font color="blue">Path:</font>&nbsp;&nbsp;$path<hr><font color="blue">Modules: </font> $modules " >>report.html
 
 
@@ -425,7 +424,6 @@ then
 	   echo "path:" $path
 	   echo "modules:" $modules
 	   echo ""
-	   echo ""
 	   echo "<font color="blue">Version:</font>&nbsp;&nbsp;$version<hr><font color="blue">Path:</font>&nbsp;&nbsp;$path<hr><font color="blue">Modules:</font>$modules " >>report.html
        if [ $c -lt $total ]
 	   then
@@ -476,7 +474,6 @@ then
 	   path=${array[c]}
 	   echo "Version : " $version
 	   echo "path:" $path
-	   echo ""
 	   echo ""
 	   echo "<font color="blue">Version:</font>&nbsp;&nbsp;$version<hr><font color="blue">Path:</font>&nbsp;&nbsp;$path " >>report.html
        if [ $c -lt $total ]
@@ -533,7 +530,6 @@ then
 	   echo "Version : " $version
 	   echo "path:" $path
 	   echo ""
-	   echo ""
   	   echo "<font color="blue">Version:</font>&nbsp;&nbsp;$version<hr><font color="blue">Path:</font>&nbsp;&nbsp;$path " >>report.html
        if [ $c -lt $total ]
 	   then
@@ -582,7 +578,6 @@ then
 
 	   echo "Version : " $version
 	   echo "path:" $path
-	   echo ""
 	   echo ""
 	   echo "<font color="blue">Version:</font>&nbsp;&nbsp;$version<hr><font color="blue">Path:</font>&nbsp;&nbsp;$path " >>report.html
        if [ $c -lt $total ]
@@ -634,9 +629,7 @@ then
 	   echo "Version : " $version
 	   echo "path:" $path
 	   echo ""
-	   echo ""
 
-	   
 	   echo "<font color="blue">Version:</font>&nbsp;&nbsp;$version<hr><font color="blue">Path:</font>&nbsp;&nbsp;$path " >>report.html
        if [ $c -lt $total ]
 	   then
@@ -689,9 +682,7 @@ then
 	   echo "Version : " $version
 	   echo "path:" $path
 	   echo ""
-	   echo ""
-
-	   
+ 
 	   echo "<font color="blue">Version:</font>&nbsp;&nbsp;$version<hr><font color="blue">Path:</font>&nbsp;&nbsp;$path " >>report.html
        if [ $c -lt $total ]
 	   then
@@ -745,9 +736,7 @@ then
 	   echo "Version : " $version
 	   echo "path:" $path
 	   echo ""
-	   echo ""
-
-	   
+   
 	   echo "<font color="blue">Version:</font>&nbsp;&nbsp;$version<hr><font color="blue">Path:</font>&nbsp;&nbsp;$path " >>report.html
        if [ $c -lt $total ]
 	   then
@@ -801,7 +790,6 @@ then
 	   echo "Version : " $version
 	   echo "path:" $path
 	   echo ""
-	   echo ""
   	   echo "<font color="blue">Version:</font>&nbsp;&nbsp;$version<hr><font color="blue">Path:</font>&nbsp;&nbsp;$path " >>report.html
        if [ $c -lt $total ]
 	   then
@@ -853,7 +841,6 @@ then
 	   path=${array[c]}
 	   echo "Version : " $version
 	   echo "path:" $path
-	   echo ""
 	   echo ""
   	   echo "<font color="blue">Version:</font>&nbsp;&nbsp;$version<hr><font color="blue">Path:</font>&nbsp;&nbsp;$path " >>report.html
        if [ $c -lt $total ]
@@ -1130,8 +1117,6 @@ else
 fi
 cd $mainpath
 
-
-
 ########################################################################
 #                     NodeJS   version                                 #
 ########################################################################
@@ -1162,7 +1147,6 @@ then
 	   path=${array[c]}
 	   echo "Version : " $version
 	   echo "path:" $path
-	   echo ""
 	   echo ""
   	   echo "<font color="blue">Version:</font>&nbsp;&nbsp;$version<hr><font color="blue">Path:</font>&nbsp;&nbsp;$path " >>report.html
            if [ $c -lt $total ]
@@ -1212,7 +1196,6 @@ then
 	   echo "Version : " $version
 	   echo "path:" $path
 	   echo ""
-	   echo ""
   	   echo "<font color="blue">Version:</font>&nbsp;&nbsp;$version<hr><font color="blue">Path:</font>&nbsp;&nbsp;$path " >>report.html
            if [ $c -lt $total ]
 	   then
@@ -1233,9 +1216,6 @@ else
 fi
 
 echo ""
-echo ""
-
-
 
 ########################################################################
 #               NGINX Service  version,path and modules                #
@@ -1270,7 +1250,6 @@ then
 	   echo "Version : " $version
 	   echo "path:" $path
 	   echo "modules:" $modules
-	   echo ""
 	   echo ""
 	   echo "<font color="blue">Version:</font>&nbsp;&nbsp;$version<hr><font color="blue">Path:</font>&nbsp;&nbsp;$path<hr><font color="blue">Modules: </font> $modules " >>report.html
 
@@ -1326,7 +1305,6 @@ then
 	   echo "Version : " $version
 	   echo "path:" $path
 	   echo "modules:" $modules
-	   echo ""
 	   echo ""
 	   echo "<font color="blue">Version:</font>&nbsp;&nbsp;$version<hr><font color="blue">Path:</font>&nbsp;&nbsp;$path<hr><font color="blue">Modules: </font> $modules " >>report.html
 
@@ -1460,7 +1438,6 @@ else
 fi 
 
 echo ""
-echo ""
 
 ####################################################################################
 #                             End of the table html part                           #
@@ -1490,7 +1467,6 @@ echo "Output report location :"  `pwd`
 echo "########################################################"
 echo $file_name.html 
 echo $file_name.json 
-echo ""
 echo ""
 
 #######################################################
@@ -1543,4 +1519,4 @@ curl -u admin:admin -H "Content-Type: application/json" -X POST -d @$file_name.j
 fi 
 echo ""
 echo ""
-echo "script executed successfully"
+echo "Execution of script was completed."
