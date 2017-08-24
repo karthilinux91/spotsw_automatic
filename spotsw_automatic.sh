@@ -1029,26 +1029,30 @@ cd $mainpath
 ########################################################################
 #               Drupal  version,path and modules	               #
 ########################################################################
+echo mainpath: $mainpath 
+echo ""
+echo ""
 echo "Drupal"
 >$mainpath/tempfiles/tmpdrupal.txt
 >$mainpath/tempfiles/drupal_index.txt
 >$mainpath/tempfiles/store.txt
-$mainpath/packages/locate$flag_version -r index.php$ -d $mainpath/mlocate.db >$mainpath/tempfiles/store.txt
-FILENAME1="$mainpath/tempfiles/store.txt"
-echo mainpath: $mainpath 
+$mainpath/packages/locate$flag_version -r index.php$ -d $mainpath/mlocate.db | xargs file  | grep "PHP script" | awk -F":" '{print $1}'>$mainpath/tempfiles/drupalstore.txt
+#$mainpath/packages/locate$flag_version -r /sites/default/settings.php -d $mainpath/mlocate.db >$mainpath/tempfiles/store.txt
+
+FILENAME1="$mainpath/tempfiles/drupalstore.txt"
 if [ -s ${FILENAME1} ]
 then
-    total="$(cat $mainpath/tempfiles/store.txt  | wc -l )"
+    total="$(cat $mainpath/tempfiles/drupalstore.txt  | wc -l )"
         i=1
         while IFS= read -r var
         do
           array[ $i ]=$var
           (( i++ ))
-        done < "$mainpath/tempfiles/store.txt"
+        done < "$mainpath/tempfiles/drupalstore.txt"
 
 for (( c=1; c<=$total; c++ ))
         do
-           cat  ${array[c]} | grep Drupal >$mainpath/tempfiles/tmpdrupal.txt
+           cat  ${array[c]} 2>&1 | grep Drupal  >$mainpath/tempfiles/tmpdrupal.txt
            v=`echo $?`
            if [ $v -eq 0 ]
            then
@@ -1056,7 +1060,10 @@ for (( c=1; c<=$total; c++ ))
            fi
         done
 fi
+echo "display the drupal final path  "
+echo "##########################################"
 cat $mainpath/tempfiles/drupal_index.txt
+echo "##########################################"
 
 ########################################################################################
 
@@ -1079,10 +1086,12 @@ then
 
 	for (( c=1; c<=$total; c++ ))
 	do
+	   echo path:${array[c]}
+	   echo "--------------------------------------------------------------------"
 	   cd ${array[c]}
-           version="`$mainpath/packages/drush8-cli status 2>&1 | grep "Drupal version" | awk -F":" '{print $2}' | xargs`"
+       version="`$mainpath/packages/drush8-cli status 2>&1 | grep "Drupal version" | awk -F":" '{print $2}' | xargs`"
 	   path=${array[c]}
-	  modules="`$mainpath/packages/drush8-cli  pm-list --fields=name,status --format=csv`"
+	  modules="`$mainpath/packages/drush8-cli  pm-list --fields=name,status --format=csv 2>&1`"
 
            modules_json="`$mainpath/packages/drush8-cli  pm-list --format=json 2>&1`"
 
@@ -1090,7 +1099,7 @@ then
 	   echo "path:" $path
 	   #echo "modules:" 
            #$mainpath/packages/drush8-cli  pm-list --format=docs-output-formats
-
+       echo "-----------------------------------------------------------------------------------------------"
 	   cd $mainpath
 
 
@@ -1508,14 +1517,14 @@ echo ""
 #    Send json data to web service              #
 #################################################
  
-echo "Send json data to server ..."
-echo "############################"
+echo "Pushing  json data to server:$1"
+echo "############################################"
 echo ""
 ip=0;
 ip=$1; >>$mainpath/tempfiles/out 2>&1 >>$mainpath/tempfiles/error.txt
 if [[ -z "$ip" ]]
 then 
-echo "IP is empty,enter the vaild Web service IP address to  push the json file to central server"
+echo "IP if not provided ,enter the vaild Web service IP address to  push the json file to the central server"
 else 
 curl -u admin:admin -H "Content-Type: application/json" -X POST -d @$file_name.json http://$1:8080/test_service/services/rest/SearchingManage/fetchDataBy/ 
 fi 
