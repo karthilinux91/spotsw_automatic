@@ -1170,7 +1170,9 @@ fi
 #########################################################################################
 echo "Npm" 
 >$mainpath/tempfiles/store.txt
-$mainpath/packages/locate$flag_version -r /bin/npm-cli.js$  -d $mainpath/mlocate.db  | xargs file 2>&1 | grep 'executable\|dynamically' | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
+#$mainpath/packages/locate$flag_version -r /bin/npm-cli.js$  -d $mainpath/mlocate.db  | xargs file 2>&1 | grep 'executable\|dynamically' | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
+$mainpath/packages/locate$flag_version -r /bin/npm-cli.js$  -d $mainpath/mlocate.db  | xargs file 2>&1 | grep 'Unicode' | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
+
 FILENAME="$mainpath/tempfiles/store.txt"
 
 #########################################################################
@@ -1319,8 +1321,8 @@ then
    	echo  "</td>                                            "        >>  report.html
         echo  " <td align=center>  LiteSpeed:1.4.27 </td>  </tr> "        >> report.html
 else
-  echo "Nginx not found!!"
-  echo "\"nginx"\":["\"not detected"\"], >> report.json 
+  echo "Litespeed not found!!"
+  echo "\"litespeed"\":["\"not detected"\"], >> report.json 
   echo  " <tr> <td class=""text-left"">LiteSpeed</td>"       >>  report.html
 	echo  " <td align=center>   Not Detected </td> "        >> report.html
 	echo  " <td align=center>LiteSpeed:1.4.27 </td></tr> "    >> report.html
