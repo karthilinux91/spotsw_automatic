@@ -25,7 +25,7 @@
 ####################################################################################################################
 mainpath=`pwd`
 begin=$(date +%s) 
-set -o nounset                              # Treat unset variables as an error
+#set -o nounset                              # Treat unset variables as an error
 >report.html 
 >report.json
 >$mainpath/tempfiles/store.txt
@@ -74,7 +74,7 @@ echo "Flag : "$flag
 
 echo ""
 echo ""
-echo "           Software Audit by AUTOMATICALLY "
+echo "           Discovery of Software Packages "
 echo "########################################################"
 echo ""
 echo ""
@@ -1481,25 +1481,39 @@ ip=`echo $vipaddress | awk '{print $1}'`
 #echo $ip 
 
 file_name=report_$ip 
-echo $file_name.html 
-echo $file_name.json  
+
+ 
 mv report.html   $file_name.html
 mv report.json   $file_name.json 
+
+echo "Output report location :"  `pwd`
+echo "########################################################"
+echo $file_name.html 
+echo $file_name.json 
+echo ""
+echo ""
 
 #######################################################
 #           Report trigger                            # 
 #######################################################
 
-which firefox   >$mainpath/tempfiles/out 2>&1 >$mainpath/tempfiles/error.txt
+which firefox   >>$mainpath/tempfiles/out 2>&1 >>$mainpath/tempfiles/error.txt
 value="$(echo $? )"
 if [ $value -eq 0 ]
 then
-     firefox $file_name.html
+     firefox $file_name.html >>$mainpath/tempfiles/out 2>&1 >>$mainpath/tempfiles/error.txt
+	 firefoxvalue="$(echo $? )"
+	 if [ $firefoxvalue -eq 0 ]
+	 then 
+	 	echo "firefox ok"
+	 else 
+	 	echo "Warning: Unable to dispaly the report page via firefox, use any other browser for viewing report!!!"
+	 fi 	 
 else
- 	echo "firefox is not found."
-  	echo "Check the report file manually by any browser"
+ 	echo "firefox is not found,use any other browser for viewing report."
+  #	echo "Check the report file manually by any browser"
 fi
-echo "location:"  `pwd`
+#echo "location:"  `pwd`
 
 ######################################
 #  show the time for script excution # 
@@ -1508,13 +1522,25 @@ echo ""
 echo ""
 end=$(date +%s)
 tottime=$(expr $end - $begin)
-echo " Time (minutes or seconds ) :" $tottime 
+echo "Time (minutes or seconds ) :" $tottime 
+echo ""
 
 
 #################################################
 #    Send json data to web service              #
 #################################################
+ 
 echo "Send json data to server ..."
-curl -u admin:admin -H "Content-Type: application/json" -X POST -d @$file_name.json http://$1:8080/test_service/services/rest/SearchingManage/fetchDataBy/
+echo "############################"
+echo ""
+ip=0;
+ip=$1; >>$mainpath/tempfiles/out 2>&1 >>$mainpath/tempfiles/error.txt
+if [[ -z "$ip" ]]
+then 
+echo "IP is empty,enter the vaild Web service IP address to  push the json file to central server"
+else 
+curl -u admin:admin -H "Content-Type: application/json" -X POST -d @$file_name.json http://$1:8080/test_service/services/rest/SearchingManage/fetchDataBy/ 
+fi 
 echo ""
 echo ""
+echo "script executed successfully"
