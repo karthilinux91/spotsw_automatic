@@ -34,6 +34,7 @@ begin=$(date +%s)
 ######################################################
 #    	Distribution Check - flag                    #
 ######################################################
+echo ""
 lsb_release -a 2&>$mainpath/tempfiles/1
 check="$(echo $? )"
 if [ $check -eq 0 ]
@@ -83,7 +84,8 @@ echo ""
 #        BASIC INFORMATION OF OS               #
 ################################################
 echo "{"  >> report.json 
-
+echo "BASIC INFORMATION OF OS"
+echo "-----------------------"
 vhostname=`hostname`
 echo "hostname:" $vhostname 
 echo ""\"hostname"\"":"\"$vhostname"\" "," >> report.json
@@ -326,21 +328,23 @@ echo  "	<tbody class=""table-hover"">				"	>>  report.html
 ##########################################################################
 # 			mlocate path	   	                         #
 ##########################################################################
-
+echo ""
 echo "wait few minutes ..............updatedb process"
 ./packages/updatedb$flag_version --require-visibility 0 -o mlocate.db
+echo ""
 
 
 ########################################################################
 #               HTTPD Service  version,path and modules                #
 ########################################################################
 echo "apache"
+echo "------"
 > $mainpath/tempfiles/store.txt
 $mainpath/packages/locate$flag_version -r /httpd$ -d $mainpath/mlocate.db | xargs file  2>&1 | grep dynamically  | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
 FILENAME="$mainpath/tempfiles/store.txt"
 if [ -s ${FILENAME} ]
 then
-    echo "File has data"
+    ##echo "File has data"
     echo  " <tr>                                            "       >>  report.html
     echo  " <td class=""text-left"">Apache </td>             "       >>  report.html
     echo  " <td class=""text-left""><br>		    "  	    >>  report.html
@@ -392,13 +396,14 @@ fi
 ########################################################################
 
 echo "PHP"
+echo "----"
 > $mainpath/tempfiles/store.txt
 $mainpath/packages/locate$flag_version -r /bin/php$ -d $mainpath/mlocate.db | xargs file  2>&1 | grep dynamically  | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
 FILENAME="$mainpath/tempfiles/store.txt"
 
 if [ -s ${FILENAME} ]
 then
-    echo "File has data"
+    #echo "File has data"
     echo  " <tr>                                            "       >>  report.html
     echo  " <td class=""text-left"">PHP   </td>             "       >>  report.html
     echo  " <td class=""text-left""><br>		    "  	    >>  report.html
@@ -447,7 +452,8 @@ fi
 ########################################################################
 #               TOMCAT  version,path                                   #
 ########################################################################
-echo "Tomcat"
+echo "tomcat"
+echo "------"
 > $mainpath/tempfiles/store.txt
 $mainpath/packages/locate$flag_version -r /catalina.jar$ -d $mainpath/mlocate.db | xargs file 2>&1 | grep Zip  | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
 FILENAME="$mainpath/tempfiles/store.txt"
@@ -455,7 +461,7 @@ FILENAME="$mainpath/tempfiles/store.txt"
 ###########################>>>>>>>>>>>>>>>>>>>>>>
 if [ -s ${FILENAME} ]
 then
-    echo "File has data"
+    #echo "File has data"
     echo  " <tr>                                            "       >>  report.html
     echo  " <td class=""text-left"">Tomcat </td>            "       >>  report.html
     echo  " <td class=""text-left""><br>		    "  	    >>  report.html
@@ -500,7 +506,8 @@ fi
 #                     JAVA version                                     #
 ########################################################################
 
-echo "JAVA"
+echo "OpenJDK"
+echo "-------"
 > $mainpath/tempfiles/store.txt
 $mainpath/packages/locate$flag_version -r /bin/java$ -d $mainpath/mlocate.db| xargs file  2>&1 | grep dynamically  | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
 
@@ -552,7 +559,9 @@ fi
 ########################################################################
 #                     PostgresSQl   Server  			       #
 ########################################################################
-echo "POSTGRESQL SERVER"
+echo "PostgreSQL SERVER"
+echo "-----------------"
+
 >$mainpath/tempfiles/store.txt
 $mainpath/packages/locate$flag_version -r bin/pg_config$ -d $mainpath/mlocate.db| xargs file 2>&1 | grep dynamically | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
 FILENAME="$mainpath/tempfiles/store.txt"
@@ -601,7 +610,8 @@ fi
 ########################################################################
 #                     PostgresSQl  Client         		       #
 ########################################################################
-echo "POSTGRESQL Client"
+echo "PostgreSQL CLIENT"
+echo "-----------------"
 >$mainpath/tempfiles/store.txt
 $mainpath/packages/locate$flag_version -r bin/psql$ -d $mainpath/mlocate.db | xargs file 2>&1 | grep dynamically | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
 FILENAME="$mainpath/tempfiles/store.txt"
@@ -654,7 +664,8 @@ fi
 ########################################################################
 #                     MYSQL or MariaDB Server                          #
 ########################################################################
-echo "MYSQL or MariaDB Server"
+echo "MySQL or MariaDB Server"
+echo "-----------------------"
 >$mainpath/tempfiles/store.txt
 $mainpath/packages/locate$flag_version -r bin/mysqld$ -d $mainpath/mlocate.db | xargs file 2>&1 | grep dynamically | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
 FILENAME="$mainpath/tempfiles/store.txt"
@@ -708,7 +719,9 @@ fi
 ########################################################################
 #                     MYSQL or MariaDB Client                          #
 ########################################################################
-echo "MYSQL or MariaDB Client"
+echo "MySQL or MariaDB Client"
+echo "-----------------------"
+
 >$mainpath/tempfiles/store.txt
 $mainpath/packages/locate$flag_version -r bin/mysql$ -d $mainpath/mlocate.db | xargs file 2>&1 | grep dynamically | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
 FILENAME="$mainpath/tempfiles/store.txt"
@@ -761,7 +774,8 @@ fi
 ########################################################################
 #                     PERL version                                     #
 ########################################################################
-echo "PERL"
+echo "Perl"
+echo "----"
 > $mainpath/tempfiles/store.txt
 $mainpath/packages/locate$flag_version -r /bin/perl$ -d $mainpath/mlocate.db | xargs file  2>&1 | grep dynamically  | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
 
@@ -813,7 +827,9 @@ fi
 ########################################################################
 #                     PYTHON  version                                  #
 ########################################################################
-echo "PYTHON" 
+echo "Python"
+echo "------"
+
 >$mainpath/tempfiles/store.txt
 $mainpath/packages/locate$flag_version  /bin/python  -d $mainpath/mlocate.db  | xargs file 2>&1 | grep dynamically | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
 
@@ -907,7 +923,7 @@ else
   echo "File empty!!"
   echo "\"running_services"\":{}, >> report.json 
 fi
-echo "running services block"
+echo "running services:Ok"
 
 ########################################################################
 #                      List of Enabled  service            	       #
@@ -960,21 +976,21 @@ else
   echo "File empty!!"
   echo "\"enabled_services"\":{}, >> report.json 
 fi
-echo "Enabled services block"
+echo "Enabled services:OK"
 
 ########################################################################
 #               Wordpress  version,path and plugins	               #
 ########################################################################
-
-echo "wordpress"
+echo "WordPress"
+echo "---------"
 > $mainpath/tempfiles/store.txt
 $mainpath/packages/locate$flag_version wp-login.php -d $mainpath/mlocate.db | awk -F"wp-login" '{print $1}' > $mainpath/tempfiles/store.txt
 FILENAME="$mainpath/tempfiles/store.txt"
 
-echo mainpath: $mainpath 
+#echo mainpath: $mainpath 
 if [ -s ${FILENAME} ]
 then
-    echo "File has data"
+    #echo "File has data"
     echo  " <tr>                                            "       >>  report.html
     echo  " <td class=""text-left"">Wordpress </td>             "       >>  report.html
     echo  " <td class=""text-left""><br>		    "  	    >>  report.html
@@ -1008,7 +1024,7 @@ then
 	  
 	  if [ $modulesflag -eq 0 ]
 	  then
-	   plugins="`$mainpath/packages/wp-cli plugin list  --format=yaml  --allow-root`"
+	   plugins="`$mainpath/packages/wp-cli plugin list  --format=csv  --allow-root --fields=name,version | grep -v 'name'`"
 	   #plugins_json="`$mainpath/packages/wp-cli plugin list --format=json  --allow-root`"
 	   /opt/spotsw_automatic/packages/wp-cli plugin list --format=csv  --allow-root --fields=name,version | grep -v name > $mainpath/tempfiles/wpplugins.txt 
 	   sed -i -e 's/,/-/g' $mainpath/tempfiles/wpplugins.txt
@@ -1035,10 +1051,10 @@ then
            if [ $c -lt $total ]
 	   then
          	echo " <hr size="4" color="#fd00cb" /> " >> report.html
-	       echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\"",""\"plugins"\":[`cat $mainpath/tempfiles/wpplugins_result.txt`]"}" ",">>  report.json
+	        echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\"",""\"plugins"\":[`cat $mainpath/tempfiles/wpplugins_result.txt`]"}" ",">>  report.json
            else 
-               echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\"",""\"plugins"\":[`cat $mainpath/tempfiles/wpplugins_result.txt`]"}" "],">>  report.json 
-		echo ""
+            echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\"",""\"plugins"\":[`cat $mainpath/tempfiles/wpplugins_result.txt`]"}" "],">>  report.json 
+		    echo ""
 	  fi 
 	done
    	echo  "</td>                                            "        >>  report.html
@@ -1053,12 +1069,13 @@ fi
 cd $mainpath
 
 ########################################################################
-#               Drupal  version,path and modules	               #
+#               Drupal  version,path and modules	                   #
 ########################################################################
-echo mainpath: $mainpath 
+#echo mainpath: $mainpath 
 echo ""
 echo ""
 echo "Drupal"
+echo "------"
 >$mainpath/tempfiles/tmpdrupal.txt
 >$mainpath/tempfiles/drupal_index.txt
 >$mainpath/tempfiles/store.txt
@@ -1086,10 +1103,11 @@ for (( c=1; c<=$total; c++ ))
            fi
         done
 fi
+echo ""
 echo "Detected  Drupal  paths  "
-echo "##########################################"
+echo "-------------------------"
 cat $mainpath/tempfiles/drupal_index.txt
-#echo "##########################################"
+echo "---------------------------------------"
 
 ########################################################################################
 
@@ -1097,7 +1115,7 @@ FILENAME2="$mainpath/tempfiles/drupal_index.txt"
 
 if [ -s ${FILENAME2} ]
 then
-    echo "File has data"
+    #echo "File has data"
     echo  " <tr>                                            "       >>  report.html
     echo  " <td class=""text-left"">Drupal</td>             "       >>  report.html
     echo  " <td class=""text-left""><br>		    "  	    >>  report.html
@@ -1175,7 +1193,8 @@ cd $mainpath
 ########################################################################
 #                     NodeJS   version                                 #
 ########################################################################
-echo "NodeJS" 
+echo "Node.js"
+echo "-------"
 >$mainpath/tempfiles/store.txt
 $mainpath/packages/locate$flag_version -r /bin/node$  -d $mainpath/mlocate.db  | xargs file 2>&1 | grep 'executable\|dynamically' | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
 FILENAME="$mainpath/tempfiles/store.txt"
@@ -1223,7 +1242,8 @@ else
 fi
 
 #########################################################################################
-echo "Npm" 
+echo "npm"
+echo "---"
 >$mainpath/tempfiles/store.txt
 #$mainpath/packages/locate$flag_version -r /bin/npm-cli.js$  -d $mainpath/mlocate.db  | xargs file 2>&1 | grep 'executable\|dynamically' | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
 $mainpath/packages/locate$flag_version -r /bin/npm-cli.js$  -d $mainpath/mlocate.db  | xargs file 2>&1 | grep 'Unicode' | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
@@ -1277,13 +1297,14 @@ echo ""
 ########################################################################
 #               NGINX Service  version,path and modules                #
 ########################################################################
-echo "nginx"
+echo "NGINX"
+echo "-----"
 >$mainpath/tempfiles/store.txt
 $mainpath/packages/locate$flag_version -r /nginx$ -d $mainpath/mlocate.db | xargs file  2>&1 | grep dynamically  | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
 FILENAME="$mainpath/tempfiles/store.txt"
 if [ -s ${FILENAME} ]
 then
-    echo "File has data"
+    #echo "File has data"
     echo  " <tr>                                            "       >>  report.html
     echo  " <td class=""text-left"">Nginx</td>             "       >>  report.html
     echo  " <td class=""text-left""><br>		    "  	    >>  report.html
@@ -1331,15 +1352,16 @@ fi
 ########################################################################
 #               Litespeed Service  version,path and modules            #
 ########################################################################
-echo "litespeed"
+echo "OpenLiteSpeed"
+echo "-------------"
 >$mainpath/tempfiles/store.txt
 $mainpath/packages/locate$flag_version -r bin/openlitespeed$ -d $mainpath/mlocate.db | xargs file  2>&1 | grep dynamically  | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
 FILENAME="$mainpath/tempfiles/store.txt"
 if [ -s ${FILENAME} ]
 then
-    echo "File has data"
+    #echo "File has data"
     echo  " <tr>                                            "       >>  report.html
-    echo  " <td class=""text-left"">LiteSpeed</td>             "       >>  report.html
+    echo  " <td class=""text-left"">OpenLiteSpeed</td>             "       >>  report.html
     echo  " <td class=""text-left""><br>		    "  	    >>  report.html
     echo "\"litespeed"\" : "[" >> report.json
     total="$(cat $mainpath/tempfiles/store.txt  | wc -l )"
@@ -1374,11 +1396,11 @@ then
 	  fi 
 	done
    	echo  "</td>                                            "        >>  report.html
-        echo  " <td align=center>  LiteSpeed:1.4.27 </td>  </tr> "        >> report.html
+        echo  " <td align=center>  OpenLiteSpeed:1.4.27 </td>  </tr> "        >> report.html
 else
-  echo "Litespeed not found!!"
+  echo "OpenLiteSpeed not found!!"
   echo "\"litespeed"\":["\"not detected"\"], >> report.json 
-  echo  " <tr> <td class=""text-left"">LiteSpeed</td>"       >>  report.html
+  echo  " <tr> <td class=""text-left"">OpenLiteSpeed</td>"       >>  report.html
 	echo  " <td align=center>   Not Detected </td> "        >> report.html
 	echo  " <td align=center>LiteSpeed:1.4.27 </td></tr> "    >> report.html
 fi
@@ -1442,8 +1464,9 @@ echo ""\"firewall_status"\": "\"$status"\","       >>report.json
 
 if [ $firewall_flag = "ok" ]
 then
-	echo "ok"
-	echo "Open Ports" 
+	#echo "ok"
+	echo "Open Ports"
+	echo "----------" 
 	>$mainpath/tempfiles/store.txt
         if [ flag_os = rhel7 ]	
 	then
@@ -1555,7 +1578,10 @@ echo ""
 echo ""
 end=$(date +%s)
 tottime=$(expr $end - $begin)
-echo "Time (minutes) :" $tottime/60 
+minutes=$(awk 'BEGIN{print $tottime / 60 }')
+
+echo "Time (minutes) :" $minutes
+#$(expr $tottime / 60)
 echo ""
 
 
@@ -1577,3 +1603,4 @@ fi
 echo ""
 echo ""
 echo "Execution of script was completed."
+echo ""
