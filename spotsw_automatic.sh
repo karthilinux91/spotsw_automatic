@@ -990,16 +990,42 @@ then
 	for (( c=1; c<=$total; c++ ))
 	do
 	   cd ${array[c]}
-           version="`$mainpath/packages/wp-cli core version --allow-root`"
 	   path=${array[c]}
-	   #plugins="`$mainpath/wp-cli plugin list --format=csv  --allow-root`"
+       version="unknown"
+	   plugins="unknown"
+	   plugins_json="\"unknown"\"
+ 	  
+	   ########check part #####################
+	  check=`$mainpath/packages/wp-cli core version --allow-root 2>&1` 
+	  versionflag=`echo $?`
+	  check=`$mainpath/packages/wp-cli plugin list  --format=yaml  --allow-root  2>&1`
+      modulesflag=`echo $?`
+	  
+	  if [ $versionflag -eq 0 ]
+	  then
+      version="`$mainpath/packages/wp-cli core version --allow-root`"
+	  fi
+	  
+	  if [ $modulesflag -eq 0 ]
+	  then
 	   plugins="`$mainpath/packages/wp-cli plugin list  --format=yaml  --allow-root`"
-	   plugins_json="`$mainpath/packages/wp-cli plugin list --format=json  --allow-root`"
+	   #plugins_json="`$mainpath/packages/wp-cli plugin list --format=json  --allow-root`"
+	   /opt/spotsw_automatic/packages/wp-cli plugin list --format=csv  --allow-root --fields=name,version | grep -v name > $mainpath/tempfiles/wpplugins.txt 
+	   sed -i -e 's/,/-/g' $mainpath/tempfiles/wpplugins.txt
+	   
+	   cat $mainpath/tempfiles/wpplugins.txt | sed  's/\(.*\)/"\1",/g' | awk '{a[NR]=$0} END {for (i=1;i<NR;i++) 
+	   print a  [i];sub(/.$/,"", a[NR]);print a[NR]}'   > $mainpath/tempfiles/wpplugins_result.txt
+
+
+
+
+
+	  fi
 
 	   echo "Version : " $version
 	   echo "path:" $path
-	   echo "plugins:" 
-	   $mainpath/packages/wp-cli plugin list   --allow-root
+	   echo "plugins:" $plugins
+	   #$mainpath/packages/wp-cli plugin list   --allow-root
 	   cd $mainpath
 
 
@@ -1009,9 +1035,9 @@ then
            if [ $c -lt $total ]
 	   then
          	echo " <hr size="4" color="#fd00cb" /> " >> report.html
-	       echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\"",""\"plugins"\": $plugins_json"}" ",">>  report.json
+	       echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\"",""\"plugins"\":[`cat $mainpath/tempfiles/wpplugins_result.txt`]"}" ",">>  report.json
            else 
-               echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\"",""\"plugins"\":$plugins_json"}" "],">>  report.json 
+               echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\"",""\"plugins"\":[`cat $mainpath/tempfiles/wpplugins_result.txt`]"}" "],">>  report.json 
 		echo ""
 	  fi 
 	done
@@ -1060,10 +1086,10 @@ for (( c=1; c<=$total; c++ ))
            fi
         done
 fi
-echo "display the drupal final path  "
+echo "Detected  Drupal  paths  "
 echo "##########################################"
 cat $mainpath/tempfiles/drupal_index.txt
-echo "##########################################"
+#echo "##########################################"
 
 ########################################################################################
 
@@ -1086,20 +1112,40 @@ then
 
 	for (( c=1; c<=$total; c++ ))
 	do
-	   echo path:${array[c]}
-	   echo "--------------------------------------------------------------------"
+	   #echo path:${array[c]}
+	   #echo "--------------------------------------------------------------------"
 	   cd ${array[c]}
-       version="`$mainpath/packages/drush8-cli status 2>&1 | grep "Drupal version" | awk -F":" '{print $2}' | xargs`"
 	   path=${array[c]}
+
+	   version="unknown"
+	   modules="unknown"
+	   modules_json="\"unknown"\"
+       
+	   #echo "check part"
+      ########check part #####################
+	  check=`$mainpath/packages/drush8-cli status 2>&1` 
+	  versionflag=`echo $?`
+	  check=`$mainpath/packages/drush8-cli  pm-list  2>&1`
+	  modulesflag=`echo $?`
+
+	  if [ $versionflag -eq 0 ]
+	  then
+      version="`$mainpath/packages/drush8-cli status 2>&1 | grep "Drupal version" | awk -F":" '{print $2}' | xargs`"
+	  fi
+	  
+	  if [ $modulesflag -eq 0 ]
+	  then
 	  modules="`$mainpath/packages/drush8-cli  pm-list --fields=name,status --format=csv 2>&1`"
-
-           modules_json="`$mainpath/packages/drush8-cli  pm-list --format=json 2>&1`"
-
+      modules_json="`$mainpath/packages/drush8-cli  pm-list --format=json 2>&1`"
+	  fi
+	   
+	   
+	   
 	   echo "Version : " $version
 	   echo "path:" $path
 	   #echo "modules:" 
            #$mainpath/packages/drush8-cli  pm-list --format=docs-output-formats
-       echo "-----------------------------------------------------------------------------------------------"
+      # echo "---------------------------------------------------------------------"
 	   cd $mainpath
 
 
@@ -1107,12 +1153,12 @@ then
 
 
            if [ $c -lt $total ]
-	   then
-         	echo " <hr size="4" color="#fd00cb" /> " >> report.html
+	   	   then
+           echo " <hr size="4" color="#fd00cb" /> " >> report.html
 	       echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\"",""\"modules"\":$modules_json "}" ",">>  report.json
            else 
-               echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\"",""\"modules"\":$modules_json"}" "],">>  report.json 
-		echo ""
+           echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\"",""\"modules"\":$modules_json"}" "],">>  report.json 
+		   echo ""
 	  fi 
 	done
    	echo  "</td>                                            "        >>  report.html
@@ -1509,7 +1555,7 @@ echo ""
 echo ""
 end=$(date +%s)
 tottime=$(expr $end - $begin)
-echo "Time (minutes or seconds ) :" $tottime 
+echo "Time (minutes) :" $tottime/60 
 echo ""
 
 
