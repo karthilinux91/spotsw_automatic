@@ -978,6 +978,7 @@ else
 fi
 echo "Enabled services:OK"
 
+echo ""
 ########################################################################
 #               Wordpress  version,path and plugins	               #
 ########################################################################
@@ -1073,7 +1074,6 @@ cd $mainpath
 ########################################################################
 #echo mainpath: $mainpath 
 echo ""
-echo ""
 echo "Drupal"
 echo "------"
 >$mainpath/tempfiles/tmpdrupal.txt
@@ -1103,7 +1103,6 @@ for (( c=1; c<=$total; c++ ))
            fi
         done
 fi
-echo ""
 echo "Detected  Drupal  paths  "
 echo "-------------------------"
 cat $mainpath/tempfiles/drupal_index.txt
@@ -1214,7 +1213,6 @@ then
 	  array[ $i ]=$var
 	  (( i++ ))
 	done < "$mainpath/tempfiles/store.txt"
-
 	for (( c=1; c<=$total; c++ ))
 	do
 	   version="`${array[c]}  -v  2>&1`"
@@ -1223,22 +1221,22 @@ then
 	   echo "path:" $path
 	   echo ""
   	   echo "<font color="blue">Version:</font>&nbsp;&nbsp;$version<hr><font color="blue">Path:</font>&nbsp;&nbsp;$path " >>report.html
-           if [ $c -lt $total ]
+       if [ $c -lt $total ]
 	   then
          	echo " <hr size="4" color="#fd00cb" /> " >> report.html
-		echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\" "}," >>  report.json
-           else 
-                echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\""}]," >>  report.json
+		    echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\" "}," >>  report.json
+       else 
+            echo "{" "\"version"\": "\"$version"\" ",""\"path"\":"\"$path"\""}]," >>  report.json
 	  fi 
 	done
-   	echo  "</td>                                          "        >>  report.html
-	echo  " <td align=center>  NodeJS:8.4.0         </td>  </tr> "        >> report.html
+   		echo  "</td>                                          "        >>  report.html
+		echo  " <td align=center>  NodeJS:8.4.0         </td>  </tr> "        >> report.html
 else
-  echo "NodeJS not found!"
-  echo "\"node"\":["\"not detected"\"], >> report.json 
-  echo  " <tr> <td class=""text-left"">NodeJS</td>"       >>  report.html
-	echo  " <td align=center>   Not Detected </td> "        >> report.html
-	echo  " <td align=center> NodeJS:8.4.0     </td></tr> "    >> report.html
+ 	 echo "NodeJS not found!"
+  	 echo "\"node"\":["\"not detected"\"], >> report.json 
+  	 echo  " <tr> <td class=""text-left"">NodeJS</td>"       >>  report.html
+	 echo  " <td align=center>   Not Detected </td> "        >> report.html
+	 echo  " <td align=center> NodeJS:8.4.0     </td></tr> "    >> report.html
 fi
 
 #########################################################################################
@@ -1418,7 +1416,7 @@ echo "\"selinux_status"\": "\"` getenforce`"\",   >> report.json
 
 
 echo "SELinux status:" ` getenforce`
-
+echo ""
 ########################################################################
 #                    Firewall  status                                  #
 ########################################################################
@@ -1566,7 +1564,7 @@ then
 	 	echo "Warning: Unable to dispaly the report page via firefox, use any other browser for viewing report!!!"
 	 fi 	 
 else
- 	echo "firefox is not found,use any other browser for viewing report."
+ 	echo "Warning: firefox is not found,use any other browser for viewing report."
   #	echo "Check the report file manually by any browser"
 fi
 #echo "location:"  `pwd`
@@ -1578,13 +1576,8 @@ echo ""
 echo ""
 end=$(date +%s)
 tottime=$(expr $end - $begin)
-minutes=$(awk 'BEGIN{print $tottime / 60 }')
-
-echo "Time (minutes) :" $minutes
-#$(expr $tottime / 60)
+echo "Time duration in seconds:" $tottime
 echo ""
-
-
 #################################################
 #    Send json data to web service              #
 #################################################
@@ -1596,7 +1589,7 @@ ip=0;
 ip=$1; >>$mainpath/tempfiles/out 2>&1 >>$mainpath/tempfiles/error.txt
 if [[ -z "$ip" ]]
 then 
-echo "IP if not provided ,enter the vaild Web service IP address to  push the json file to the central server"
+echo "Warning: IP if not provided ,enter the vaild Web service IP address to  push the json file to the central server"
 else 
 curl -u admin:admin -H "Content-Type: application/json" -X POST -d @$file_name.json http://$1:8080/test_service/services/rest/SearchingManage/fetchDataBy/ 
 fi 
