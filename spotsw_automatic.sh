@@ -1079,7 +1079,7 @@ echo "------"
 >$mainpath/tempfiles/tmpdrupal.txt
 >$mainpath/tempfiles/drupal_index.txt
 >$mainpath/tempfiles/store.txt
-$mainpath/packages/locate$flag_version -r index.php$ -d $mainpath/mlocate.db | xargs file  | grep "PHP script" | awk -F":" '{print $1}'>$mainpath/tempfiles/drupalstore.txt
+$mainpath/packages/locate$flag_version -r index.php$ -d $mainpath/mlocate.db | xargs file 2>&1 | grep "PHP script" | awk -F":" '{print $1}'>$mainpath/tempfiles/drupalstore.txt
 #$mainpath/packages/locate$flag_version -r /sites/default/settings.php -d $mainpath/mlocate.db >$mainpath/tempfiles/store.txt
 
 FILENAME1="$mainpath/tempfiles/drupalstore.txt"
@@ -1102,11 +1102,12 @@ for (( c=1; c<=$total; c++ ))
            echo ${array[c]} | awk -F "index.php" '{print $1}' >>$mainpath/tempfiles/drupal_index.txt  
            fi
         done
-fi
+
 echo "Detected  Drupal  paths  "
 echo "-------------------------"
 cat $mainpath/tempfiles/drupal_index.txt
 echo "---------------------------------------"
+fi
 
 ########################################################################################
 
@@ -1192,6 +1193,7 @@ cd $mainpath
 ########################################################################
 #                     NodeJS   version                                 #
 ########################################################################
+echo ""
 echo "Node.js"
 echo "-------"
 >$mainpath/tempfiles/store.txt
@@ -1407,6 +1409,7 @@ fi
 ########################################################################
 #                     SELinux  status                                  #
 ########################################################################
+echo ""
 echo  " <tr>                                                            "       >>  report.html
 echo  " <td class=""text-left"">SELinux</td>   "       >>  report.html
 echo  " <td class=""text-left""><br>		                        "  	>>  report.html
