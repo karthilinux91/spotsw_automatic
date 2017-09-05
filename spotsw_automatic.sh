@@ -667,7 +667,12 @@ fi
 echo "MySQL or MariaDB Server"
 echo "-----------------------"
 >$mainpath/tempfiles/store.txt
-$mainpath/packages/locate$flag_version -r bin/mysqld$ -d $mainpath/mlocate.db | xargs file 2>&1 | grep dynamically | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
+#$mainpath/packages/locate$flag_version -r bin/mysqld$ -d $mainpath/mlocate.db | xargs file 2>&1 | grep dynamically | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
+
+
+$mainpath/packages/locate$flag_version -r  mysqld$ -d $mainpath/mlocate.db | xargs file 2>&1 | grep dynamically | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
+
+
 FILENAME="$mainpath/tempfiles/store.txt"
 ##############################################################################################
 if [ -s ${FILENAME} ]
@@ -723,7 +728,7 @@ echo "MySQL or MariaDB Client"
 echo "-----------------------"
 
 >$mainpath/tempfiles/store.txt
-$mainpath/packages/locate$flag_version -r bin/mysql$ -d $mainpath/mlocate.db | xargs file 2>&1 | grep dynamically | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
+$mainpath/packages/locate$flag_version -r mysql$ -d $mainpath/mlocate.db | xargs file 2>&1 | grep dynamically | awk -F":" '{print $1}' > $mainpath/tempfiles/store.txt
 FILENAME="$mainpath/tempfiles/store.txt"
 ##############################################################################################
 if [ -s ${FILENAME} ]
@@ -853,7 +858,7 @@ then
 
 	for (( c=1; c<=$total; c++ ))
 	do
-	   version="`${array[c]}  -V  2>&1 | awk '{print $2}' `"
+	   version="`${array[c]}  -V  2>&1 | grep Python |  awk '{print $2}' `"
 	   path=${array[c]}
 	   echo "Version : " $version
 	   echo "path:" $path
