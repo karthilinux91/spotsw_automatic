@@ -789,7 +789,7 @@ then
     echo  " <td class=""text-left"">Perl </td>              "       >>  report.html
     echo  " <td class=""text-left""><br>		    "  	    >>  report.html
     echo "\"perl"\" : "[" >> report.json
-    total="$(cat $mainpath/tempfiles/store.txt  | wc -l )"
+    total="$(cat $mainpath/tempfiles/store.txt  2>&1 | wc -l )"
 	i=1
 	while IFS= read -r var
 	do
@@ -843,7 +843,7 @@ then
     echo  " <td class=""text-left"">Python </td>              "       >>  report.html
     echo  " <td class=""text-left""><br>		    "  	    >>  report.html
     echo "\"python"\" : "[" >> report.json
-    total="$(cat $mainpath/tempfiles/store.txt  | wc -l )"
+    total="$(cat $mainpath/tempfiles/store.txt 2>&1 | wc -l )"
 	i=1
 	while IFS= read -r var
 	do
@@ -1240,7 +1240,7 @@ else
 	 echo  " <td align=center>   Not Detected </td> "        >> report.html
 	 echo  " <td align=center> NodeJS:8.4.0     </td></tr> "    >> report.html
 fi
-
+echo ""
 #########################################################################################
 echo "npm"
 echo "---"
@@ -1352,6 +1352,7 @@ fi
 ########################################################################
 #               Litespeed Service  version,path and modules            #
 ########################################################################
+echo ""
 echo "OpenLiteSpeed"
 echo "-------------"
 >$mainpath/tempfiles/store.txt
@@ -1545,7 +1546,7 @@ mv report.html   $file_name.html
 mv report.json   $file_name.json 
 
 echo "Output report location :"  `pwd`
-echo "########################################################"
+echo "#######################################################"
 echo $file_name.html 
 echo $file_name.json 
 echo ""
@@ -1586,7 +1587,7 @@ echo ""
 #################################################
  
 echo "Pushing  json data to server:$1"
-echo "############################################"
+echo "###########################################"
 echo ""
 ip=0;
 ip=$1; >>$mainpath/tempfiles/out 2>&1 >>$mainpath/tempfiles/error.txt
