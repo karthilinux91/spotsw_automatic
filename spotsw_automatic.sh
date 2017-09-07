@@ -990,6 +990,7 @@ echo ""
 echo "WordPress"
 echo "---------"
 > $mainpath/tempfiles/store.txt
+> $mainpath/tempfiles/wpplugins_result.txt
 $mainpath/packages/locate$flag_version wp-login.php -d $mainpath/mlocate.db | awk -F"wp-login" '{print $1}' > $mainpath/tempfiles/store.txt
 FILENAME="$mainpath/tempfiles/store.txt"
 
@@ -1035,8 +1036,8 @@ then
 	   /opt/spotsw_automatic/packages/wp-cli plugin list --format=csv  --allow-root --fields=name,version | grep -v name > $mainpath/tempfiles/wpplugins.txt 
 	   sed -i -e 's/,/-/g' $mainpath/tempfiles/wpplugins.txt
 	   
-	   cat $mainpath/tempfiles/wpplugins.txt | sed  's/\(.*\)/"\1",/g' | awk '{a[NR]=$0} END {for (i=1;i<NR;i++) 
-	   print a  [i];sub(/.$/,"", a[NR]);print a[NR]}'   > $mainpath/tempfiles/wpplugins_result.txt
+
+	   cat $mainpath/tempfiles/wpplugins.txt | sed  's/\(.*\)/"\1",/g' | awk '{a[NR]=$0} END {for (i=1;i<NR;i++) print a  [i];sub(/.$/,"", a[NR]);print a[NR]}'   > $mainpath/tempfiles/wpplugins_result.txt
 
 
 
